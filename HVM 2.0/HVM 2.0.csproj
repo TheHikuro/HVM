@@ -333,10 +333,6 @@
     <Content Include="Views\Patients\Details.cshtml" />
     <Content Include="Views\Patients\Edit.cshtml" />
     <Content Include="Views\Patients\Index.cshtml" />
-    <Content Include="Views\Visiteurs\Create.cshtml" />
-    <Content Include="Views\Visiteurs\Delete.cshtml" />
-    <Content Include="Views\Visiteurs\Details.cshtml" />
-    <Content Include="Views\Visiteurs\Edit.cshtml" />
     <Content Include="Views\Visiteurs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
