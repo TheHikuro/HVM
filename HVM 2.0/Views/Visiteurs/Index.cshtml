@@ -6,24 +6,29 @@
 <h2>Index</h2>
 
 <table class="table">
-    <ul>
-        <span class="description">
-            Shared publicity - @DateTime.Now.ToString()
-        </span>
-    </ul>
-    <ul>
-        <span class="description">
-            test - @DateTime.Now.ToLocalTime()
-        </span>
-    </ul>
-    <ul>
-        @DateTime.Now.AddDays(15)
-    </ul>
+    <div>
+        <ul>
+            <span class="description">
+                Shared publicity - @DateTime.Now.ToString()
+            </span>
+        </ul>
+        <ul>
+            <span class="description">
+                test - @DateTime.Now.ToLocalTime()
+            </span>
+        </ul>
+        <ul>
+            @DateTime.Now.AddDays(15)
+        </ul>
+    </div>
+
 </table>
 
-@foreach ( string str in modle)
+@foreach ( var item in Model)
 {
     <div>
-        @str.
+        <ul>
+            @item.date
+        </ul>
     </div>
 }
