@@ -22,24 +22,20 @@ namespace HVM_2._0.Controllers
             CreneauLibre creneauLibre = new CreneauLibre();
 
 
-            TimeSpan time1 = new TimeSpan(2, 4, 18);
-            TimeSpan time2 = new TimeSpan(3, 5, 19);
-            TimeSpan time3 = new TimeSpan(4, 6, 20);
+            for (int i = 1; i < 15; i++)
+            {
+                creneauTmpR.Add(new Creneau { date = DateTime.Now.AddDays(i) });
+            }
 
-            DateTime date1 = DateTime.Now.ToLocalTime();
-            DateTime date2 = new DateTime(2017, 5, 16);
-            DateTime date3 = new DateTime(2018, 9, 25);
-
-            
-            creneauTmpR.Add(new Creneau { id_creneau = 1, heure = time1, date = date1 });
-            creneauTmpR.Add(new Creneau { id_creneau = 2, heure = time2, date = date2 });
-            creneauTmpR.Add(new Creneau { id_creneau = 3, heure = time3, date = date3 });
-
-            //ViewData["Creneau"] = creneauTmpR;
-
-            
-
-            return View(creneauTmpR);
+            foreach(Creneau crn in creneauTmpR)
+            {
+                foreach(Creneau dBcrn in db.Creneau)
+                {
+                    if (crn.id_creneau == dBcrn.id_creneau && crn.id_patient == dBcrn.id_patient)
+                        creneauTmpR.Remove(crn);
+                }
+            }
+                return View(creneauTmpR);
         }
 
 

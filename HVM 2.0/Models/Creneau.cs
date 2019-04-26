@@ -17,7 +17,7 @@ namespace HVM_2._0.Models
         public byte[] disponibilite { get; set; }
         public byte[] reserve { get; set; }
         public Nullable<int> id_patient { get; set; }
-        public IList<string> Name = new List<string>();
+        
 
 
         public virtual Patient Patient { get; set; }
