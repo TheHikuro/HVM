@@ -23,10 +23,25 @@ namespace HVM_2._0.Controllers
 
             for (int i = 1; i < 15; i++)
             {
-                creneauTmpR.Add(new Creneau { date = DateTime.Now.AddDays(i) });
+                //creneauTmpR.Add(new Creneau { date = DateTime.Now.AddDays(i) });
+                string date = DateTime.Now.AddDays(i).ToString();
+                string newdate = null;
+                date = date.Substring(0, 10);
+                for(int h = 7; h < 18; h++)
+                {
+                    if (h < 10)
+                    {
+                        newdate = date + " " + 0 + h + ":00:00";
+                    }
+                    
+                    else
+                    {
+                        newdate = date + " " + h + ":00:00";
+                    }
+                   
+                    creneauTmpR.Add(new Creneau(DateTime.Parse(newdate)) );
+                }
             }
-
-            
 
             foreach(Creneau crn in creneauTmpR)
             {

@@ -6,9 +6,15 @@ namespace HVM_2._0.Models
     public partial class Creneau
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+
         public Creneau()
         {
             this.Reserve1 = new HashSet<Reserve>();
+        }
+
+        public Creneau(DateTime p_date)
+        {
+            date = p_date;
         }
         
     
