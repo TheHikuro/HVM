@@ -15,11 +15,11 @@ namespace HVM_2._0.Controllers
         private Database1Entities db = new Database1Entities();
         Creneau creneau = new Creneau();
 
-        // GET: Visiteurs
+        
         public ActionResult Index()
         {
             List<Creneau> creneauTmpR = new List<Creneau>();
-            
+            List<string> listTampon = new List<string>();
 
             for (int i = 1; i < 15; i++)
             {
@@ -43,7 +43,18 @@ namespace HVM_2._0.Controllers
                 }
             }
 
-            foreach(Creneau crn in creneauTmpR)
+            //récupération du submit depuis la view : Index 
+            if (Request.HttpMethod == "POST")
+            {
+                if (Request.Form["Creneaux"] != null)
+                {
+                    listTampon.Add(Request.Form["Creneaux"]);
+                    return RedirectToAction("Inscription", "Visiteurs");
+                }
+            }
+
+            //Retire le creneau occupé
+            foreach (Creneau crn in creneauTmpR)
             {
                 foreach(Creneau dBcrn in db.Creneau)
                 {
@@ -57,6 +68,14 @@ namespace HVM_2._0.Controllers
 
         public ActionResult Inscription()
         {
+            if (Request.HttpMethod == "POST")
+            {
+                if (Request.Form["creneauxOccup"] != null)
+                {
+                    //db.Creneau.Add(Request.Form["id"], Request.Form["prenom"], Request.Form["nom"], Request.Form["mail"]);
+                    return RedirectToAction("Inscription", "Visiteurs");
+                }
+            }
             return View();
         }
         }

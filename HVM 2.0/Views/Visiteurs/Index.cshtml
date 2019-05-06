@@ -7,14 +7,17 @@
 
 <h2>Index</h2>
 
-    <select name="Creneaux">
+<form method="post" action="/Visiteurs/Index">
+    <select name="creneauxOccup">
         @foreach (var item in Model)
         {
             <option>@item.date</option>
-
         }
-        
+
     </select>
+    <input type="submit" class="btn btn-default" id="next" value="Suivant"/>
+</form>
+    
 
 
-    <input type="submit" class="btn btn-default" id="next" value="Suivant" onclick="@("window.location.href='" + @Url.Action("Inscription", "Visiteurs") + "'");"/>
+    

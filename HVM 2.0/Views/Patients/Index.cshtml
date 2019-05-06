@@ -1,4 +1,5 @@
-﻿@model IEnumerable<HVM_2._0.Models.Patient>
+﻿@model IEnumerable<HVM_2._0.Models.Creneau>
+
 
 @{
     ViewBag.Title = "Index";
@@ -6,58 +7,13 @@
 
 <h2>Index</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.prenom)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.nom)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.age)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.login)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.password)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.code_visiteur)
-        </th>
-        <th></th>
-    </tr>
+<form method="post" action="/Patients/Confirmation">
+    <select name="Creneaux">
+        @foreach (var item in Model)
+        {
+            <option>@item.date</option>
+        }
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.prenom)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.nom)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.age)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.login)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.password)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.code_visiteur)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.id_patient }) |
-            @Html.ActionLink("Details", "Details", new { id=item.id_patient }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.id_patient })
-        </td>
-    </tr>
-}
-
-</table>
+    </select>
+    <input type="submit" class="btn btn-default" id="next" value="Confirmation" />
+</form>
