@@ -2,6 +2,83 @@
     ViewBag.Title = "Home Page";
 }
 
-<span class="description">
-    Shared publicity - @DateTime.Now.ToString()
-</span>
+<script type="text/javascript">
+
+    function handleClick(myRadio) {
+
+        if (myRadio.value == "Visiteur") {
+            // visible tamer div
+            document.getElementById("loginFormVisiteur").style.visibility = "visible";
+            document.getElementById("loginFormPatient").style.visibility = "hidden";
+        }
+
+        else {
+            // hide tamer div
+            document.getElementById("loginFormVisiteur").style.visibility = "hidden";
+            document.getElementById("loginFormPatient").style.visibility = "visible";
+        }
+
+    }
+
+</script>
+
+<div class="row">
+    <div class="col-md-8" id="wrapper">
+        <!-- Formulaire Visiteur -->
+        <div class="leftForm">
+
+            <input type="button" id="contactchoice1" name="contact" value="Visiteur" onclick="handleClick(this)" />
+            <form method="post" action="/Home/Index">
+                <section id="loginFormVisiteur" style="visibility:hidden" value="loginFormVisiteur">
+
+                    <h4>Utilisez le numero du dossier patient</h4>
+                    <hr />
+
+                    <div class="form-group">
+                            <label for="code_visiteur" name="codeVisiteur"/>
+                            <input type="text" name="codeVisiteur" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Connexion" class="btn btn-default" />
+                        </div>
+                    </div>
+                </section>
+            </form>
+        </div>
+
+        <div class="rightForm">
+
+            <input type="button" id="contactchoice2" name="contact" value="Patient" onclick="handleClick(this)" />
+            <form methode="post" action="/Home/Index">
+                <section id="loginFormPatient" style="visibility:hidden" value="loginFormPatient">
+
+                    <h4>Login</h4>
+                    <hr />
+
+                    <div class="form-group">
+                        <div class="col-md-10">
+                            <label for="p_Patient" name="p_Patient" />
+                            <input type="text" name="p_Patient" />
+                        </div>
+                    </div>
+                    <h4>Mot de passe :</h4>
+                    <hr />
+
+                    <div>
+                        <label for="pass" name="p_Patient"/>
+                        <input type="password" name="pass" />
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Connexion" class="btn btn-default" />
+                        </div>
+                    </div>
+                </section>
+            </form>
+            
+        </div>
+        <div />
+    </div>
