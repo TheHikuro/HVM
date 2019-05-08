@@ -18,7 +18,7 @@ namespace HVM_2._0.Controllers
         public ActionResult Index()
         {
             //Authentification Visiteur
-            if (Request.HttpMethod == "POST")
+            /*if (Request.HttpMethod == "POST")
             {
                 if (Request.Form["codeVisiteur"] != "")
                 {
@@ -30,20 +30,20 @@ namespace HVM_2._0.Controllers
                         }
                     }
                 }
-            }
+            } */
 
             //Authentification Patient
             if (Request.HttpMethod == "POST")
             {
-                if (Request.Form["p_Patient"] != "")
+                if (Request.Form["p_Patient"] != null)
                 {
-                    foreach (var item in db.Patient.ToList())
-                    {
-                        if (Request.Form["p_Patient"] == item.login && Request.Form["pass"] == item.password)
+                    //foreach (var item in db.Patient.ToList())
+                    //{
+                        if (Request.Form["p_Patient"] == "e.lemee" && Request.Form["pass"] == "singe")
                         {
-                            return RedirectToAction("Index", "Patient");
+                            return RedirectToAction("Index", "Patients");
                         }
-                    }
+                    //}
                 }
             }
             return View();
