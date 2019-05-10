@@ -12,7 +12,7 @@ namespace HVM_2._0.Controllers
 {
     public class PatientsController : Controller
     {
-        private Database1Entities db = new Database1Entities();
+        private Database1Entities1 db = new Database1Entities1();
 
         // GET: Patients
         public ActionResult Index()

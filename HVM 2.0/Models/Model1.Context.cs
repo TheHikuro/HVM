@@ -13,10 +13,10 @@ namespace HVM_2._0.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class Database1Entities : DbContext
+    public partial class Database1Entities1 : DbContext
     {
-        public Database1Entities()
-            : base("name=Database1Entities")
+        public Database1Entities1()
+            : base("name=Database1Entities1")
         {
         }
     
@@ -25,7 +25,6 @@ namespace HVM_2._0.Models
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Chambre> Chambre { get; set; }
         public virtual DbSet<Creneau> Creneau { get; set; }
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Possede> Possede { get; set; }

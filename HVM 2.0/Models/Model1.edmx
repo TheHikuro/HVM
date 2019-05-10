@@ -5,24 +5,12 @@
     <!-- SSDL content -->
     <edmx:StorageModels>
       <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Chambre">
-          <Key>
-            <PropertyRef Name="id_chambre" />
-          </Key>
-          <Property Name="id_chambre" Type="int" Nullable="false" />
-          <Property Name="numero" Type="int" />
-          <Property Name="etage" Type="int" />
-          <Property Name="batiment" Type="varchar" MaxLength="50" />
-        </EntityType>
         <EntityType Name="Creneau">
           <Key>
             <PropertyRef Name="id_creneau" />
           </Key>
           <Property Name="id_creneau" Type="int" Nullable="false" />
-          <Property Name="heure" Type="time" Precision="7" />
-          <Property Name="date" Type="date" />
-          <Property Name="disponibilite" Type="binary" MaxLength="50" />
-          <Property Name="reserve" Type="binary" MaxLength="50" />
+          <Property Name="date" Type="datetime" />
           <Property Name="id_patient" Type="int" />
         </EntityType>
         <EntityType Name="Patient">
@@ -95,18 +83,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Possede_ToTable_1">
-          <End Role="Chambre" Type="Self.Chambre" Multiplicity="1" />
-          <End Role="Possede" Type="Self.Possede" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chambre">
-              <PropertyRef Name="id_chambre" />
-            </Principal>
-            <Dependent Role="Possede">
-              <PropertyRef Name="id_chambre" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Reserve_ToTable">
           <End Role="Creneau" Type="Self.Creneau" Multiplicity="1" />
           <End Role="Reserve" Type="Self.Reserve" Multiplicity="*" />
@@ -132,7 +108,6 @@
           </ReferentialConstraint>
         </Association>
         <EntityContainer Name="Database1ModelStoreContainer">
-          <EntitySet Name="Chambre" EntityType="Self.Chambre" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Creneau" EntityType="Self.Creneau" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Patient" EntityType="Self.Patient" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Possede" EntityType="Self.Possede" Schema="dbo" store:Type="Tables" />
@@ -145,10 +120,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_Possede_ToTable" Association="Self.FK_Possede_ToTable">
             <End Role="Patient" EntitySet="Patient" />
-            <End Role="Possede" EntitySet="Possede" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Possede_ToTable_1" Association="Self.FK_Possede_ToTable_1">
-            <End Role="Chambre" EntitySet="Chambre" />
             <End Role="Possede" EntitySet="Possede" />
           </AssociationSet>
           <AssociationSet Name="FK_Reserve_ToTable" Association="Self.FK_Reserve_ToTable">
@@ -165,28 +136,15 @@
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Chambre">
-          <Key>
-            <PropertyRef Name="id_chambre" />
-          </Key>
-          <Property Name="id_chambre" Type="Int32" Nullable="false" />
-          <Property Name="numero" Type="Int32" />
-          <Property Name="etage" Type="Int32" />
-          <Property Name="batiment" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Possede" Relationship="Self.FK_Possede_ToTable_1" FromRole="Chambre" ToRole="Possede" />
-        </EntityType>
         <EntityType Name="Creneau">
           <Key>
             <PropertyRef Name="id_creneau" />
           </Key>
           <Property Name="id_creneau" Type="Int32" Nullable="false" />
-          <Property Name="heure" Type="Time" Precision="7" />
-          <Property Name="date" Type="DateTime" Precision="0" />
-          <Property Name="disponibilite" Type="Binary" MaxLength="50" FixedLength="true" />
-          <Property Name="reserve" Type="Binary" MaxLength="50" FixedLength="true" />
+          <Property Name="date" Type="DateTime" Precision="3" />
           <Property Name="id_patient" Type="Int32" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_id_Patient_toPatient" FromRole="Creneau" ToRole="Patient" />
-          <NavigationProperty Name="Reserve1" Relationship="Self.FK_Reserve_ToTable" FromRole="Creneau" ToRole="Reserve" />
+          <NavigationProperty Name="Reserve" Relationship="Self.FK_Reserve_ToTable" FromRole="Creneau" ToRole="Reserve" />
         </EntityType>
         <EntityType Name="Patient">
           <Key>
@@ -209,7 +167,6 @@
           <Property Name="id_Patient" Type="Int32" Nullable="false" />
           <Property Name="id_chambre" Type="Int32" Nullable="false" />
           <Property Name="id_possede" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Chambre" Relationship="Self.FK_Possede_ToTable_1" FromRole="Possede" ToRole="Chambre" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_Possede_ToTable" FromRole="Possede" ToRole="Patient" />
         </EntityType>
         <EntityType Name="Reserve">
@@ -241,18 +198,6 @@
           <Property Name="mail" Type="String" MaxLength="50" FixedLength="true" Unicode="true" />
           <NavigationProperty Name="Reserve" Relationship="Self.FK_Reserve_ToTable_1" FromRole="Visiteur" ToRole="Reserve" />
         </EntityType>
-        <Association Name="FK_Possede_ToTable_1">
-          <End Role="Chambre" Type="Self.Chambre" Multiplicity="1" />
-          <End Role="Possede" Type="Self.Possede" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Chambre">
-              <PropertyRef Name="id_chambre" />
-            </Principal>
-            <Dependent Role="Possede">
-              <PropertyRef Name="id_chambre" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_id_Patient_toPatient">
           <End Role="Patient" Type="Self.Patient" Multiplicity="0..1" />
           <End Role="Creneau" Type="Self.Creneau" Multiplicity="*" />
@@ -301,18 +246,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="Database1Entities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Chambre" EntityType="Self.Chambre" />
+        <EntityContainer Name="Database1Entities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Creneau" EntityType="Self.Creneau" />
           <EntitySet Name="Patient" EntityType="Self.Patient" />
           <EntitySet Name="Possede" EntityType="Self.Possede" />
           <EntitySet Name="Reserve" EntityType="Self.Reserve" />
           <EntitySet Name="Table" EntityType="Self.Table" />
           <EntitySet Name="Visiteur" EntityType="Self.Visiteur" />
-          <AssociationSet Name="FK_Possede_ToTable_1" Association="Self.FK_Possede_ToTable_1">
-            <End Role="Chambre" EntitySet="Chambre" />
-            <End Role="Possede" EntitySet="Possede" />
-          </AssociationSet>
           <AssociationSet Name="FK_id_Patient_toPatient" Association="Self.FK_id_Patient_toPatient">
             <End Role="Patient" EntitySet="Patient" />
             <End Role="Creneau" EntitySet="Creneau" />
@@ -335,25 +275,12 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities">
-          <EntitySetMapping Name="Chambre">
-            <EntityTypeMapping TypeName="Database1Model.Chambre">
-              <MappingFragment StoreEntitySet="Chambre">
-                <ScalarProperty Name="id_chambre" ColumnName="id_chambre" />
-                <ScalarProperty Name="numero" ColumnName="numero" />
-                <ScalarProperty Name="etage" ColumnName="etage" />
-                <ScalarProperty Name="batiment" ColumnName="batiment" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="Database1ModelStoreContainer" CdmEntityContainer="Database1Entities1">
           <EntitySetMapping Name="Creneau">
             <EntityTypeMapping TypeName="Database1Model.Creneau">
               <MappingFragment StoreEntitySet="Creneau">
                 <ScalarProperty Name="id_creneau" ColumnName="id_creneau" />
-                <ScalarProperty Name="heure" ColumnName="heure" />
                 <ScalarProperty Name="date" ColumnName="date" />
-                <ScalarProperty Name="disponibilite" ColumnName="disponibilite" />
-                <ScalarProperty Name="reserve" ColumnName="reserve" />
                 <ScalarProperty Name="id_patient" ColumnName="id_patient" />
               </MappingFragment>
             </EntityTypeMapping>

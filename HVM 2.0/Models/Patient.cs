@@ -28,7 +28,6 @@ namespace HVM_2._0.Models
         public string login { get; set; }
         public string password { get; set; }
         public Nullable<int> code_visiteur { get; set; }
-
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Creneau> Creneau { get; set; }
