@@ -15,7 +15,7 @@ namespace HVM_2._0.Controllers
         private Database1Entities1 db = new Database1Entities1();
         Creneau creneau;
         Visiteur m_visiteur = new Visiteur();
-        String tempCreneau;
+        string tempCreneau;
         
 
 
@@ -23,10 +23,11 @@ namespace HVM_2._0.Controllers
         {
             return View();
         }*/
-        public ActionResult Index(int  id)
+        public ActionResult Index()
         {
+            object test = Session["codeVisiteur"];
             List<Creneau> creneauTmpR = new List<Creneau>();
-            m_visiteur.codeVisit = id;
+            //m_visiteur.codeVisit = id;
             for (int i = 1; i < 15; i++)
             {
                 //creneauTmpR.Add(new Creneau { date = DateTime.Now.AddDays(i) });
@@ -54,7 +55,7 @@ namespace HVM_2._0.Controllers
             {
                 foreach (Creneau dBcrn in db.Creneau)
                 {
-                    if (crn.id_creneau == dBcrn.id_creneau && crn.id_patient == dBcrn.id_patient)
+                    if (crn.date == dBcrn.date && crn.id_patient == dBcrn.id_patient)
                         creneauTmpR.Remove(crn);
                 }
             }
@@ -64,24 +65,23 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["Creneaux"] != null)
                 {
-                    tempCreneau = Request.Form["Creneaux"];
-                    
-                    return View("Inscription");
+                    tempCreneau = Request.Form["Creneaux"].ToString();
+
+                    return RedirectToAction("Inscription", "Visiteurs", new { tempCreneau });
                 }
             }
                 return View(creneauTmpR);
         }
 
         
-        public ActionResult Inscription()
+        public ActionResult Inscription(string tempCreneau)
         {
-            int idPatient = 0;
-            int idCreneau = 1;
+            object test = Session["codeVisiteur"];
             int idVisiteur = 1;
 
             if (Request.HttpMethod == "POST" && tempCreneau != null)
             {
-                if (Request.Form["prenom"] != "" && Request.Form["nom"] != "" && Request.Form["mail"] != "")
+                if (Request.Form["prenom"] != null && Request.Form["nom"] != null && Request.Form["mail"] != null)
                 {
                     foreach(var item in db.Visiteur.ToList())
                     {
@@ -91,20 +91,14 @@ namespace HVM_2._0.Controllers
                     m_visiteur = new Visiteur(idVisiteur + 1,Request.Form["prenom"],Request.Form["nom"],Request.Form["mail"]);
                     db.Visiteur.Add(m_visiteur);
                     db.SaveChanges();
-
-                    foreach (var item in db.Patient.ToList())
-                    {
-                        if (item.code_visiteur == codeVisit)
-                            idPatient = item.id_patient;
-                    }
-
+                    int j = 0;
                     foreach(var item in db.Creneau.ToList())
                     {
-                        if (item.id_creneau > idCreneau)
-                            idCreneau = item.id_creneau;
+                        j++;
                     }
+                    j++;
 
-                    creneau = new Creneau(idCreneau + 1,Convert.ToDateTime(tempCreneau), idPatient);
+                    creneau = new Creneau(j,Convert.ToDateTime(tempCreneau), Int32.Parse(Session["idVisiteur"].ToString()));
                     
                     db.Creneau.Add(creneau);
                     db.SaveChanges();

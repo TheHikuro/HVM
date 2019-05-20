@@ -15,24 +15,28 @@ namespace HVM_2._0.Controllers
         private Database1Entities1 db = new Database1Entities1();
 
         int r_codeVisit = -1;
-
         public ActionResult Index()
         {
-            
             //Authentification Visiteur
             if (Request.HttpMethod == "POST")
             {
-                r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
-                if (r_codeVisit.ToString() != "" && r_codeVisit != -1)
+                if(Request.Form["codeVisiteur"] != null)
                 {
-                    foreach (var item in db.Patient.ToList())
+                    r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
+                    if (r_codeVisit.ToString() != null && r_codeVisit != -1)
                     {
-                        if (r_codeVisit == item.code_visiteur)
+                        foreach (var item in db.Patient.ToList())
                         {
-                            return RedirectToAction("Index", "Visiteurs", new { id = r_codeVisit });
+                            if (r_codeVisit == item.code_visiteur)
+                            {
+                                Session["codeVisiteur"] = r_codeVisit;
+                                Session["idVisiteur"] = item.id_patient;
+                                return RedirectToAction("Index", "Visiteurs");
+                            }
                         }
                     }
                 }
+                
             } 
 
             //Authentification Patient
