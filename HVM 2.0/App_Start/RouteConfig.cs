@@ -20,11 +20,11 @@ namespace HVM_2._0
                  //defaults: new { controller = "Home", action = "Index", id = UrlParameter.Optional }
             );
 
-          /*  routes.MapRoute(
-                name: "Visiteur",
-                url: "{controller}/{action}",
-                defaults: new { controller = "Visiteurs", action = "Index"}
-            );*/
+            routes.MapRoute(
+                name: "Patient",
+                url: "{controller}/{action}/{confirmCreneaux}",
+                defaults: new { controller = "Patients", action = "Index", confirmCreneaux = UrlParameter.Optional }
+            );
 
            routes.MapRoute(
                name: "Visiteur2",

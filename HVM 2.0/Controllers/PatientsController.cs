@@ -18,6 +18,7 @@ namespace HVM_2._0.Controllers
         public ActionResult Index()
         {
             Creneau creneau = new Creneau();
+            string confirmCreneaux;
 
             if (Request.HttpMethod == "POST")
             {
@@ -25,18 +26,26 @@ namespace HVM_2._0.Controllers
                 {
                    if(Request.Form["accept"] != null)
                     {
-
+                        confirmCreneaux = Request.Form["CreneauxPris"];
+                        return RedirectToAction("Mail", "Patients", new { confirmCreneaux });
                     }
 
                    if(Request.Form["refus"] != null)
                     {
+                        foreach(var item in db.Creneau)
+                        {
 
+                        }
                     }
-
-                    return RedirectToAction("Inscription", "Visiteurs");
                 }
             }
             return View(db.Creneau);
+        }
+
+        public ActionResult Mail(string confirmCreneaux)
+        {
+
+            return View();
         }
             
     }
