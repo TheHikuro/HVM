@@ -48,6 +48,7 @@ namespace HVM_2._0.Controllers
                     {
                         if (Request.Form["p_Patient"].ToString() == item.login.Trim() && Request.Form["pass"].ToString() == item.password.Trim())
                         {
+                            Session["p_Patient"] = Request.Form["p_Patient"];
                             return RedirectToAction("Index", "Patients");
                         }
                     }

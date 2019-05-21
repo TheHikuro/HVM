@@ -1,4 +1,4 @@
-﻿@model IEnumerable<HVM_2._0.Models.Creneau>
+﻿@model HVM_2._0.Models.all
 
 
 @{
@@ -9,12 +9,28 @@
 
 <form method="post" action="/Patients/Index">
     <select name="CreneauxPris">
-        @foreach (var item in Model)
+        @{int idPatient = 0 ;
+        foreach (var item in Model.crenaux)
         {
-            <option>@item.date</option>
+            foreach (var usr in Model.patients)
+            {
+                if (Session["p_Patient"].ToString() == usr.login.Trim())
+                {
+                    idPatient = usr.id_patient;
+                }
+            }
+            if (item.id_patient == idPatient)
+            {
+                <option>@item.date</option>
+            }
         }
+            }
 
     </select>
     <input type="submit" class="btn btn-default" name="accept" value="Accept" />
     <input type="submit" class="btn btn-default" name="refus" value="Decline" />
 </form>
+
+<table>
+
+</table>
