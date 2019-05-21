@@ -56,26 +56,34 @@ namespace HVM_2._0.Controllers
 
         public ActionResult Mail(string confirmCreneaux)
         {
-            object sess = Session["p_Patient"];
-            var fromAdress = new MailAddress("Hopital.Manager@gmmail.com", "HVM");
+            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress("loan.cleris@gmail.com");
             const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
                 "Bonjour, /n" + "";
-                
+
             var SmtpClient = new SmtpClient
             {
-                Host ="smtp.gmail.com",
+                Host = "smtp.gmail.com",
                 Port = 587,
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = true,
                 Credentials = new NetworkCredential(fromAdress.Address, fromPassword)
             };
-            using (var message = new MailMessage{ Subject = subject, Body = bodyAccept })
+
+            object sess = Session["p_Patient"];
+            if (Request.HttpMethod == "POST")
             {
-                SmtpClient.Send(message);
+                if (Request.Form["sendMailConf"] != null)
+                {
+                    using (var message = new MailMessage { Subject = subject, Body = bodyAccept })
+                    {
+                        SmtpClient.Send(message);
+                    }
+                }
+
             }
 
             return View();
