@@ -13,13 +13,12 @@ namespace HVM_2._0.Controllers
     public class PatientsController : Controller
     {
         private Database1Entities1 db = new Database1Entities1();
+        string confirmCreneaux;
+        Creneau creneau = new Creneau();
 
         // GET: Patients
         public ActionResult Index()
         {
-            Creneau creneau = new Creneau();
-            string confirmCreneaux;
-
             if (Request.HttpMethod == "POST")
             {
                 if (Request.Form["CreneauxPris"] != null)
@@ -31,10 +30,11 @@ namespace HVM_2._0.Controllers
                     }
 
                    if(Request.Form["refus"] != null)
-                    {
-                        foreach(var item in db.Creneau)
+                   {
+                        confirmCreneaux = Request.Form["CreneauxPris"];
+                        if (confirmCreneaux == creneau.date.ToString())
                         {
-
+                            
                         }
                     }
                 }
