@@ -14,11 +14,25 @@ namespace HVM_2._0.Models
     
     public partial class Reserve
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+
+        public Reserve()
+        {
+
+        }
+
+        public Reserve(int p_id_Reserve,int p_id_Creneau,int p_id_Visiteur)
+        {
+            id_Reserve = p_id_Reserve;
+            id_Creneau = p_id_Creneau;
+            id_Visiteur = p_id_Visiteur;
+        }
         public int id_Creneau { get; set; }
         public int id_Visiteur { get; set; }
-        public int id_test { get; set; }
+        public int id_Reserve { get; set; }
     
         public virtual Creneau Creneau { get; set; }
         public virtual Visiteur Visiteur { get; set; }
+
     }
 }

@@ -29,7 +29,6 @@ namespace HVM_2._0.Models
         public virtual DbSet<Patient> Patient { get; set; }
         public virtual DbSet<Possede> Possede { get; set; }
         public virtual DbSet<Reserve> Reserve { get; set; }
-        public virtual DbSet<Table> Table { get; set; }
         public virtual DbSet<Visiteur> Visiteur { get; set; }
     }
 }

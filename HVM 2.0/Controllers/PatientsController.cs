@@ -15,10 +15,6 @@ namespace HVM_2._0.Controllers
     {
         private Database1Entities1 db = new Database1Entities1();
         string confirmCreneaux;
-        Creneau creneau = new Creneau();
-        Patient patient = new Patient();
-        
-
         // GET: Patients
         public ActionResult Index()
         {
@@ -28,10 +24,10 @@ namespace HVM_2._0.Controllers
                 if (Request.Form["CreneauxPris"] != null)
                 {
                    if(Request.Form["accept"] != null)
-                    {
+                   {
                         confirmCreneaux = Request.Form["CreneauxPris"];
                         return RedirectToAction("Mail", "Patients", new { confirmCreneaux });
-                    }
+                   }
 
                    if(Request.Form["refus"] != null)
                    {
@@ -44,12 +40,14 @@ namespace HVM_2._0.Controllers
                                 
                             }
                         }
-                    }
+                   }
                 }
             }
             all All = new all();
             All.crenaux = db.Creneau.ToList();
             All.patients = db.Patient.ToList();
+            All.reserves = db.Reserve.ToList();
+            All.visiteurs = db.Visiteur.ToList();
             db.SaveChanges();
             return View(All);
         }

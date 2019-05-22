@@ -5,7 +5,7 @@
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
       <Diagram DiagramId="d6db52730e9645cb9c065eec6a27275c" Name="Diagram1">
-        <EntityTypeShape EntityType="Database1Model.Creneau" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="Database1Model.Creneau" Width="1.5" PointX="2.75" PointY="0.625" IsExpanded="true" />
         <EntityTypeShape EntityType="Database1Model.Patient" Width="1.5" PointX="0.75" PointY="1.875" IsExpanded="true" />
         <EntityTypeShape EntityType="Database1Model.Possede" Width="1.5" PointX="3" PointY="3.75" IsExpanded="true" />
         <EntityTypeShape EntityType="Database1Model.Reserve" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />

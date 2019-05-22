@@ -9,19 +9,35 @@
 
 <form method="post" action="/Patients/Index">
     <select name="CreneauxPris">
-        @{int idPatient = 0 ;
-        foreach (var item in Model.crenaux)
-        {
-            foreach (var usr in Model.patients)
+        @{  int idPatient = 0 ;
+            String nomVisiteur = null;
+            String prenomVisiteur = null;
+            foreach (var item in Model.crenaux)
             {
-                if (Session["p_Patient"].ToString() == usr.login.Trim())
+                foreach (var usr in Model.patients)
                 {
-                    idPatient = usr.id_patient;
+                    if (Session["p_Patient"].ToString() == usr.login.Trim())
+                    {
+                        idPatient = usr.id_patient;
+                    }
                 }
-            }
-            if (item.id_patient == idPatient)
-            {
-                <option>@item.date</option>
+                foreach(var res in Model.reserves)
+                {
+                    if (res.id_Creneau == item.id_creneau)
+                    {
+                        foreach(var vis in Model.visiteurs)
+                        {
+                            if(res.id_Visiteur == vis.id_Visiteur)
+                            {
+                                prenomVisiteur = vis.prenom;
+                                nomVisiteur = vis.nom;
+                            }
+                        }
+                    }
+                }
+                if (item.id_patient == idPatient)
+                {
+                <option>@item.date par @prenomVisiteur @nomVisiteur</option>
             }
         }
             }
