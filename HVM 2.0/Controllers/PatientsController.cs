@@ -14,35 +14,55 @@ namespace HVM_2._0.Controllers
     public class PatientsController : Controller
     {
         private Database1Entities1 db = new Database1Entities1();
-        string confirmCreneaux;
+        int idCreneau;
         // GET: Patients
+
         public ActionResult Index()
         {
             object sess = Session["p_Patient"];
+            int idPatient = 0;
+
+            foreach (var usr in db.Patient)
+            {
+                if (Session["p_Patient"].ToString() == usr.login.Trim())
+                {
+                    idPatient = usr.id_patient;
+                }
+            }
+
             if (Request.HttpMethod == "POST")
             {
                 if (Request.Form["CreneauxPris"] != null)
                 {
                    if(Request.Form["accept"] != null)
                    {
-                        confirmCreneaux = Request.Form["CreneauxPris"];
-                        return RedirectToAction("Mail", "Patients", new { confirmCreneaux });
+                        foreach (var item in db.Creneau)
+                        {
+                            if (item.date.ToString().Trim() == Request.Form["CreneauxPris"].Split('|')[0].Trim() && item.id_patient == idPatient)
+                            {
+                                item.disponibilite = false;
+                                item.reserve = false;
+                                idCreneau = item.id_creneau;
+                            }
+                        }
+                        db.SaveChanges();
+                        return RedirectToAction("Mail", "Patients");
                    }
 
                    if(Request.Form["refus"] != null)
                    {
-                        confirmCreneaux = Request.Form["CreneauxPris"];
-                        foreach(var item in db.Creneau)
+                        foreach (var item in db.Creneau)
                         {
-                            if (confirmCreneaux == item.date.ToString())
+                            if (Request.Form["CreneauxPris"].Split('|')[0].Trim() == item.date.ToString().Trim() && idPatient == item.id_patient)
                             {
-                                db.Creneau.Remove(item);
-                                
+                                item.reserve = false;
+                                //db.Creneau.Remove(item);
                             }
                         }
                    }
                 }
             }
+
             all All = new all();
             All.crenaux = db.Creneau.ToList();
             All.patients = db.Patient.ToList();
@@ -52,7 +72,7 @@ namespace HVM_2._0.Controllers
             return View(All);
         }
 
-        public ActionResult Mail(string confirmCreneaux)
+        public ActionResult Mail()
         {
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress("loan.cleris@gmail.com");
@@ -60,7 +80,7 @@ namespace HVM_2._0.Controllers
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
                 "Bonjour, /n" + "";
-
+           
             var SmtpClient = new SmtpClient
             {
                 Host = "smtp.gmail.com",

@@ -21,6 +21,7 @@
                         idPatient = usr.id_patient;
                     }
                 }
+
                 foreach(var res in Model.reserves)
                 {
                     if (res.id_Creneau == item.id_creneau)
@@ -35,12 +36,13 @@
                         }
                     }
                 }
-                if (item.id_patient == idPatient)
+
+                if (item.id_patient == idPatient && item.reserve == true)
                 {
-                <option>@item.date par @prenomVisiteur @nomVisiteur</option>
+                <option>@item.date | par @prenomVisiteur @nomVisiteur</option>
+                }
             }
         }
-            }
 
     </select>
     <input type="submit" class="btn btn-default" name="accept" value="Accept" />

@@ -24,6 +24,7 @@ namespace HVM_2._0.Models
             disponibilite = true;
             reserve = false;
         }
+
         public Creneau(DateTime p_date)
         {
             date = p_date;
@@ -37,7 +38,6 @@ namespace HVM_2._0.Models
             reserve = p_reserve;
             id_patient = p_id_patient;
         }
-
 
         public int id_creneau { get; set; }
         public System.DateTime date { get; set; }

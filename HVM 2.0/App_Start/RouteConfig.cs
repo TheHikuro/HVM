@@ -23,7 +23,7 @@ namespace HVM_2._0
             routes.MapRoute(
                 name: "Patient",
                 url: "{controller}/{action}/{confirmCreneaux}",
-                defaults: new { controller = "Patients", action = "Index", confirmCreneaux = UrlParameter.Optional }
+                defaults: new { controller = "Patients", action = "Index"}
             );
 
            routes.MapRoute(
