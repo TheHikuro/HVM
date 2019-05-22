@@ -56,12 +56,12 @@ namespace HVM_2._0.Controllers
 
         public ActionResult Mail(string confirmCreneaux)
         {
+            
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress("loan.cleris@gmail.com");
             const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
-            string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
-                "Bonjour, /n" + "";
+            
 
             var SmtpClient = new SmtpClient
             {
@@ -78,6 +78,9 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["sendMailConf"] != null)
                 {
+                    string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
+                "Bonjour, /n" + "" ;
+
                     using (var message = new MailMessage { Subject = subject, Body = bodyAccept })
                     {
                         SmtpClient.Send(message);

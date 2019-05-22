@@ -17,12 +17,6 @@ namespace HVM_2._0.Controllers
         Visiteur m_visiteur = new Visiteur();
         string tempCreneau;
         
-
-
-        /*public ActionResult Index()
-        {
-            return View();
-        }*/
         public ActionResult Index()
         {
             object test = Session["codeVisiteur"];

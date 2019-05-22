@@ -9,5 +9,6 @@ namespace HVM_2._0.Models
     {
         public List<Creneau> crenaux { get; set; }
         public List<Patient> patients { get; set; }
+        public List<Visiteur> visiteurs { get; set; }
     }
 }
