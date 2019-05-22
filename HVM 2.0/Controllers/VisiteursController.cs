@@ -70,8 +70,10 @@ namespace HVM_2._0.Controllers
         
         public ActionResult Inscription(string tempCreneau)
         {
-            object test = Session["codeVisiteur"];
+            object codeVisiteur = Session["codeVisiteur"];
             int idVisiteur = 1;
+            int idCreneau = 1;
+            int idReserve = 1;
 
             if (Request.HttpMethod == "POST" && tempCreneau != null)
             {
@@ -79,24 +81,30 @@ namespace HVM_2._0.Controllers
                 {
                     foreach(var item in db.Visiteur.ToList())
                     {
-                        if (item.id_Visiteur > idVisiteur)
-                            idVisiteur = item.id_Visiteur;
+                        idVisiteur++;
                     }
-                    m_visiteur = new Visiteur(idVisiteur + 1,Request.Form["prenom"],Request.Form["nom"],Request.Form["mail"]);
+                    m_visiteur = new Visiteur(idVisiteur,Request.Form["prenom"],Request.Form["nom"],Request.Form["mail"]);
                     db.Visiteur.Add(m_visiteur);
                     db.SaveChanges();
-                    int j = 0;
+
+                    
                     foreach(var item in db.Creneau.ToList())
                     {
-                        j++;
+                        idCreneau++;
                     }
-                    j++;
 
-                    creneau = new Creneau(j,Convert.ToDateTime(tempCreneau), Int32.Parse(Session["idVisiteur"].ToString()));
-                    
+                    creneau = new Creneau(idCreneau,Convert.ToDateTime(tempCreneau), false, true, Int32.Parse(Session["idVisiteur"].ToString()));
                     db.Creneau.Add(creneau);
                     db.SaveChanges();
-                    
+
+                    foreach(var res in db.Reserve.ToList())
+                    {
+                        idReserve++;
+                    }
+
+                    db.Reserve.Add(new Reserve(idReserve, idCreneau, idVisiteur));
+                    db.SaveChanges();
+
                     return RedirectToAction("Index", "Home");
                 }
             }

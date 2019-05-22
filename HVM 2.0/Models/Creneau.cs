@@ -11,31 +11,39 @@ namespace HVM_2._0.Models
 {
     using System;
     using System.Collections.Generic;
-    
+
     public partial class Creneau
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+     
         public Creneau()
         {
-            this.Reserve = new HashSet<Reserve>();
+            id_creneau = 0;
+            date = Convert.ToDateTime("2019-01-01 00:00:00");
+            id_patient = 0;
+            disponibilite = true;
+            reserve = false;
         }
-
         public Creneau(DateTime p_date)
         {
             date = p_date;
         }
 
-        public Creneau(int p_id, DateTime p_date, int p_id_patient)
+        public Creneau(int p_id, DateTime p_date, Boolean p_disponibilite, Boolean p_reserve, int p_id_patient)
         {
             id_creneau = p_id;
             date = p_date;
+            disponibilite = p_disponibilite;
+            reserve = p_reserve;
             id_patient = p_id_patient;
         }
 
 
         public int id_creneau { get; set; }
-        public Nullable<System.DateTime> date { get; set; }
-        public Nullable<int> id_patient { get; set; }
+        public System.DateTime date { get; set; }
+        public int id_patient { get; set; }
+        public Boolean disponibilite { get; set; }
+        public Boolean reserve { get; set; }
     
         public virtual Patient Patient { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

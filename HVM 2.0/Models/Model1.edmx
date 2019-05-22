@@ -4,13 +4,15 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Database1Model.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Creneau">
           <Key>
             <PropertyRef Name="id_creneau" />
           </Key>
           <Property Name="id_creneau" Type="int" Nullable="false" />
           <Property Name="date" Type="datetime" />
+          <Property Name="disponibilite" Type="bit" />
+          <Property Name="reserve" Type="bit" />
           <Property Name="id_patient" Type="int" />
         </EntityType>
         <EntityType Name="Patient">
@@ -35,11 +37,11 @@
         </EntityType>
         <EntityType Name="Reserve">
           <Key>
-            <PropertyRef Name="id_test" />
+            <PropertyRef Name="id_Reserve" />
           </Key>
           <Property Name="id_Creneau" Type="int" Nullable="false" />
           <Property Name="id_Visiteur" Type="int" Nullable="false" />
-          <Property Name="id_test" Type="int" Nullable="false" />
+          <Property Name="id_Reserve" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -131,8 +133,7 @@
             <End Role="Reserve" EntitySet="Reserve" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="Database1Model" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -145,6 +146,8 @@
           <Property Name="id_patient" Type="Int32" />
           <NavigationProperty Name="Patient" Relationship="Self.FK_id_Patient_toPatient" FromRole="Creneau" ToRole="Patient" />
           <NavigationProperty Name="Reserve" Relationship="Self.FK_Reserve_ToTable" FromRole="Creneau" ToRole="Reserve" />
+          <Property Name="disponibilite" Type="Boolean" />
+          <Property Name="reserve" Type="Boolean" />
         </EntityType>
         <EntityType Name="Patient">
           <Key>
@@ -171,13 +174,13 @@
         </EntityType>
         <EntityType Name="Reserve">
           <Key>
-            <PropertyRef Name="id_test" />
+            <PropertyRef Name="id_Reserve" />
           </Key>
           <Property Name="id_Creneau" Type="Int32" Nullable="false" />
           <Property Name="id_Visiteur" Type="Int32" Nullable="false" />
-          <Property Name="id_test" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Creneau" Relationship="Self.FK_Reserve_ToTable" FromRole="Reserve" ToRole="Creneau" />
           <NavigationProperty Name="Visiteur" Relationship="Self.FK_Reserve_ToTable_1" FromRole="Reserve" ToRole="Visiteur" />
+          <Property Name="id_Reserve" Type="Int32" Nullable="false" />
         </EntityType>
         <EntityType Name="Table">
           <Key>
@@ -280,6 +283,8 @@
             <EntityTypeMapping TypeName="Database1Model.Creneau">
               <MappingFragment StoreEntitySet="Creneau">
                 <ScalarProperty Name="id_creneau" ColumnName="id_creneau" />
+                <ScalarProperty Name="disponibilite" ColumnName="disponibilite" />
+                <ScalarProperty Name="reserve" ColumnName="reserve" />
                 <ScalarProperty Name="date" ColumnName="date" />
                 <ScalarProperty Name="id_patient" ColumnName="id_patient" />
               </MappingFragment>
@@ -310,9 +315,9 @@
           <EntitySetMapping Name="Reserve">
             <EntityTypeMapping TypeName="Database1Model.Reserve">
               <MappingFragment StoreEntitySet="Reserve">
+                <ScalarProperty Name="id_Reserve" ColumnName="id_Reserve" />
                 <ScalarProperty Name="id_Creneau" ColumnName="id_Creneau" />
                 <ScalarProperty Name="id_Visiteur" ColumnName="id_Visiteur" />
-                <ScalarProperty Name="id_test" ColumnName="id_test" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
