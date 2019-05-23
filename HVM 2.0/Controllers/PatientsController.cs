@@ -53,7 +53,7 @@ namespace HVM_2._0.Controllers
                             if (Request.Form["CreneauxPris"].Split('|')[0].Trim() == item.date.ToString().Trim() && idPatient == item.id_patient)
                             {
                                 item.reserve = false;
-                                return RedirectToAction("mailRefus", "Patient", new { crnPris });
+                                return RedirectToAction("mailRefus", "Patients", new { crnPris });
                             }
                         }
                    }
@@ -143,7 +143,7 @@ namespace HVM_2._0.Controllers
                     if (Session["p_Patient"].ToString() == usr.login.Trim())
                     {
                         idPatient = usr.id_patient;
-                        nomPatient = usr.nom;
+                        nomPatient = usr.nom.Trim();
                     }
                 }
 
@@ -155,9 +155,9 @@ namespace HVM_2._0.Controllers
                         {
                             if (res.id_Visiteur == vis.id_Visiteur)
                             {
-                                prenomVisiteur = vis.prenom;
-                                nomVisiteur = vis.nom;
-                                mailVisiteur = vis.mail;
+                                prenomVisiteur = vis.prenom.Trim();
+                                nomVisiteur = vis.nom.Trim();
+                                mailVisiteur = vis.mail.Trim();
                             }
                         }
                     }
