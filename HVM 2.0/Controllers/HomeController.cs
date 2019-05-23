@@ -20,7 +20,7 @@ namespace HVM_2._0.Controllers
             //Authentification Visiteur
             if (Request.HttpMethod == "POST")
             {
-                if(Request.Form["codeVisiteur"] != null)
+                if(Request.Form["codeVisiteur"] != null && Request.Form["codeVisiteur"] != "")
                 {
                     r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
                     if (r_codeVisit.ToString() != null && r_codeVisit != -1)

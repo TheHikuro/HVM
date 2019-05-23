@@ -1,15 +1,17 @@
-﻿@model HVM_2._0.Models.all
+﻿<!-- PATIENTS/INDEX-->
+
+@model HVM_2._0.Models.all
 
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2 style="text-align:center">Validation des visites</h2>
 
-<form method="post" action="/Patients/Index">
-    <select name="CreneauxPris">
-        @{  int idPatient = 0 ;
+<form method="post" action="/Patients/Index" style="text-align:center">
+    <select name="CreneauxPris" style="width:auto">
+        @{ int idPatient = 0;
             String nomVisiteur = null;
             String prenomVisiteur = null;
             foreach (var item in Model.crenaux)
@@ -22,13 +24,13 @@
                     }
                 }
 
-                foreach(var res in Model.reserves)
+                foreach (var res in Model.reserves)
                 {
                     if (res.id_Creneau == item.id_creneau)
                     {
-                        foreach(var vis in Model.visiteurs)
+                        foreach (var vis in Model.visiteurs)
                         {
-                            if(res.id_Visiteur == vis.id_Visiteur)
+                            if (res.id_Visiteur == vis.id_Visiteur)
                             {
                                 prenomVisiteur = vis.prenom;
                                 nomVisiteur = vis.nom;
@@ -39,16 +41,14 @@
 
                 if (item.id_patient == idPatient && item.reserve == true)
                 {
-                <option>@item.date | par @prenomVisiteur @nomVisiteur</option>
+                    <option>@item.date | par @prenomVisiteur @nomVisiteur</option>
                 }
             }
         }
 
     </select>
-    <input type="submit" class="btn btn-default" name="accept" value="Accept" />
-    <input type="submit" class="btn btn-default" name="refus" value="Decline" />
+    <input type="submit" class="btn btn-default" name="accept" value="Valider" style="background-color:palegreen" />
+    <input type="submit" class="btn btn-default" name="refus" value="Refuser" style="background-color:lightcoral" />
 </form>
 
-<table>
-
-</table>
+<table></table>

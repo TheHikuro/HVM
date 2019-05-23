@@ -14,10 +14,10 @@ namespace HVM_2._0.Controllers
     public class PatientsController : Controller
     {
         private Database1Entities1 db = new Database1Entities1();
-        int idCreneau;
-
+        
         public ActionResult Index()
         {
+            int idCreneau;
             object sess = Session["p_Patient"];
             int idPatient = 0;
             String crnPris = Request.Form["CreneauxPris"];
@@ -25,9 +25,7 @@ namespace HVM_2._0.Controllers
             foreach (var usr in db.Patient)
             {
                 if (Session["p_Patient"].ToString() == usr.login.Trim())
-                {
                     idPatient = usr.id_patient;
-                }
             }
 
             if (Request.HttpMethod == "POST")
@@ -40,8 +38,7 @@ namespace HVM_2._0.Controllers
                         {
                             if (item.date.ToString().Trim() == crnPris.Split('|')[0].Trim() && item.id_patient == idPatient)
                             {
-                                item.disponibilite = false;
-                                item.reserve = false;
+                                item.disponibilite = false; item.reserve = false;
                                 idCreneau = item.id_creneau;
                             }
                         }
@@ -56,7 +53,6 @@ namespace HVM_2._0.Controllers
                             if (Request.Form["CreneauxPris"].Split('|')[0].Trim() == item.date.ToString().Trim() && idPatient == item.id_patient)
                             {
                                 item.reserve = false;
-                                //db.Creneau.Remove(item);
                                 return RedirectToAction("mailRefus", "Patient", new { crnPris });
                             }
                         }
@@ -64,23 +60,17 @@ namespace HVM_2._0.Controllers
                 }
             }
 
-            all All = new all();
-            All.crenaux = db.Creneau.ToList();
-            All.patients = db.Patient.ToList();
-            All.reserves = db.Reserve.ToList();
-            All.visiteurs = db.Visiteur.ToList();
+            all All = new all(); All.crenaux = db.Creneau.ToList(); All.patients = db.Patient.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
             db.SaveChanges();
+
             return View(All);
         }
         
         public ActionResult Mail(String crnPris)
         {
             int idPatient = 0;
-            String nomVisiteur = null;
-            String prenomVisiteur = null;
-            String mailVisiteur = null;
-            String nomPatient = null;
-
+            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
+        
             foreach (var item in db.Creneau)
             {
                 foreach (var usr in db.Patient)
@@ -107,9 +97,7 @@ namespace HVM_2._0.Controllers
                         }
                     }
                 }
-
             }
-               
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress(mailVisiteur);
             const string fromPassword = "HVM2019'";
@@ -139,20 +127,15 @@ namespace HVM_2._0.Controllers
                         SmtpClient.Send(message);
                     }
                 }
-
             }
-
             return View();
         }
 
         public ActionResult mailRefus(String crnPris)
         {
             int idPatient = 0;
-            String nomVisiteur = null;
-            String prenomVisiteur = null;
-            String mailVisiteur = null;
-            String nomPatient = null;
-
+            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
+           
             foreach (var item in db.Creneau)
             {
                 foreach (var usr in db.Patient)
@@ -179,10 +162,7 @@ namespace HVM_2._0.Controllers
                         }
                     }
                 }
-
             }
-
-
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress(mailVisiteur);
             const string fromPassword = "HVM2019'";

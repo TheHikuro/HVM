@@ -1,4 +1,6 @@
-﻿@{
+﻿<!-- HOME/INDEX-->
+
+@{
     ViewBag.Title = "Home Page";
 }
 
@@ -7,13 +9,11 @@
     function handleClick(myRadio) {
 
         if (myRadio.value == "Visiteur") {
-            // visible tamer div
             document.getElementById("loginFormVisiteur").style.visibility = "visible";
             document.getElementById("loginFormPatient").style.visibility = "hidden";
         }
 
         else {
-            // hide tamer div
             document.getElementById("loginFormVisiteur").style.visibility = "hidden";
             document.getElementById("loginFormPatient").style.visibility = "visible";
         }
@@ -23,13 +23,13 @@
 </script>
 
 <div class="row">
-    <div class="col-md-8" id="wrapper">
+    <div class="" id="wrapper">
         <!-- Formulaire Visiteur -->
         <div class="leftForm">
 
-            <input type="button" id="contactchoice1" name="contactVisiteur" value="Visiteur" onclick="handleClick(this)" />
+            <p style="text-align:center;margin-top:10px"><input type="button" id="contactchoice1" name="contactVisiteur" value="Visiteur" onclick="handleClick(this)" style="width:250px;height:auto;font-size:25px" /></p>
             <form method="post" action="/Home/Index">
-                <section id="loginFormVisiteur" style="visibility:hidden" value="loginFormVisiteur">
+                <section id="loginFormVisiteur" style="visibility:hidden;text-align:center" value="loginFormVisiteur">
 
                     <h4>Utilisez le numero du dossier patient</h4>
                     <hr />
@@ -37,26 +37,23 @@
                     <div class="form-group">
                         <input type="text" name="codeVisiteur" />
                     </div>
-
+                    <hr />
                     <div class="form-group">
-                        <div class="col-md-offset-2 col-md-10">
-                            <input type="submit" value="Connexion" class="btn btn-default" />
-                        </div>
+                        <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
                     </div>
 
                 </section>
             </form>
         </div>
-        <!-- Formulaire Fin Visiteur -->
-
+        <!-- Fin Formulaire Visiteur -->
         <!-- Formulaire Patient -->
         <div class="rightForm">
 
-            <input type="button" id="contactchoice2" name="contactPatient" value="Patient" onclick="handleClick(this)" />
+            <p style="text-align:center;margin-top:10px"><input type="button" id="contactchoice2" name="contactPatient" value="Patient" onclick="handleClick(this)" style="width:250px;height:auto;font-size:25px" /></p>
             <form method="post" action="/Home/Index">
-                <section id="loginFormPatient" style="visibility:hidden" value="loginFormPatient">
+                <section id="loginFormPatient" style="visibility:hidden;text-align:center" value="loginFormPatient">
 
-                    <h4>Login</h4>
+                    <h4>Identifiant :</h4>
 
                     <div class="form-group">
                         <input type="text" name="p_Patient" />
@@ -69,11 +66,11 @@
                     </div>
                     <hr />
                     <div class="form-group">
-                        <input type="submit" value="Connexion" class="btn btn-default" />
+                        <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
                     </div>
                 </section>
             </form>
         </div>
-        <!-- Formulaire Fin Patient -->
+        <!-- Fin Formulaire Patient -->
         <div />
     </div>
