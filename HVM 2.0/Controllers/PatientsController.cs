@@ -15,12 +15,12 @@ namespace HVM_2._0.Controllers
     {
         private Database1Entities1 db = new Database1Entities1();
         int idCreneau;
-        // GET: Patients
 
         public ActionResult Index()
         {
             object sess = Session["p_Patient"];
             int idPatient = 0;
+            String crnPris = Request.Form["CreneauxPris"];
 
             foreach (var usr in db.Patient)
             {
@@ -38,7 +38,7 @@ namespace HVM_2._0.Controllers
                    {
                         foreach (var item in db.Creneau)
                         {
-                            if (item.date.ToString().Trim() == Request.Form["CreneauxPris"].Split('|')[0].Trim() && item.id_patient == idPatient)
+                            if (item.date.ToString().Trim() == crnPris.Split('|')[0].Trim() && item.id_patient == idPatient)
                             {
                                 item.disponibilite = false;
                                 item.reserve = false;
@@ -46,7 +46,7 @@ namespace HVM_2._0.Controllers
                             }
                         }
                         db.SaveChanges();
-                        return RedirectToAction("Mail", "Patients");
+                        return RedirectToAction("Mail", "Patients", new { crnPris });
                    }
 
                    if(Request.Form["refus"] != null)
@@ -57,6 +57,7 @@ namespace HVM_2._0.Controllers
                             {
                                 item.reserve = false;
                                 //db.Creneau.Remove(item);
+                                return RedirectToAction("mailRefus", "Patient", new { crnPris });
                             }
                         }
                    }
@@ -71,16 +72,53 @@ namespace HVM_2._0.Controllers
             db.SaveChanges();
             return View(All);
         }
-
-        public ActionResult Mail()
+        
+        public ActionResult Mail(String crnPris)
         {
+            int idPatient = 0;
+            String nomVisiteur = null;
+            String prenomVisiteur = null;
+            String mailVisiteur = null;
+            String nomPatient = null;
+
+            foreach (var item in db.Creneau)
+            {
+                foreach (var usr in db.Patient)
+                {
+                    if (Session["p_Patient"].ToString() == usr.login.Trim())
+                    {
+                        idPatient = usr.id_patient;
+                        nomPatient = usr.nom;
+                    }
+                }
+
+                foreach (var res in db.Reserve)
+                {
+                    if (res.id_Creneau == item.id_creneau)
+                    {
+                        foreach (var vis in db.Visiteur)
+                        {
+                            if (res.id_Visiteur == vis.id_Visiteur)
+                            {
+                                prenomVisiteur = vis.prenom;
+                                nomVisiteur = vis.nom;
+                                mailVisiteur = vis.mail;
+                            }
+                        }
+                    }
+                }
+
+            }
+               
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
-            var toAddress = new MailAddress("loan.cleris@gmail.com");
+            var toAddress = new MailAddress(mailVisiteur);
             const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
-                "Bonjour, /n" + "";
-           
+                    "Bonjour Mr/Mme" + nomVisiteur + "/n" +
+            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crnPris + "/n" +
+            "Merci de ne pas repondre à ce mail";
+
             var SmtpClient = new SmtpClient
             {
                 Host = "smtp.gmail.com",
@@ -106,9 +144,83 @@ namespace HVM_2._0.Controllers
 
             return View();
         }
-            
+
+        public ActionResult mailRefus(String crnPris)
+        {
+            int idPatient = 0;
+            String nomVisiteur = null;
+            String prenomVisiteur = null;
+            String mailVisiteur = null;
+            String nomPatient = null;
+
+            foreach (var item in db.Creneau)
+            {
+                foreach (var usr in db.Patient)
+                {
+                    if (Session["p_Patient"].ToString() == usr.login.Trim())
+                    {
+                        idPatient = usr.id_patient;
+                        nomPatient = usr.nom;
+                    }
+                }
+
+                foreach (var res in db.Reserve)
+                {
+                    if (res.id_Creneau == item.id_creneau)
+                    {
+                        foreach (var vis in db.Visiteur)
+                        {
+                            if (res.id_Visiteur == vis.id_Visiteur)
+                            {
+                                prenomVisiteur = vis.prenom;
+                                nomVisiteur = vis.nom;
+                                mailVisiteur = vis.mail;
+                            }
+                        }
+                    }
+                }
+
+            }
+
+
+            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
+            var toAddress = new MailAddress(mailVisiteur);
+            const string fromPassword = "HVM2019'";
+            string subject = "Reponse à votre demande de visite";
+            string bodyRefus = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
+                    "Bonjour Mr/Mme" + nomVisiteur + "/n" +
+            "Nous vous informons que" + nomPatient + "à refusé la demande de visite le " + crnPris + 
+            "Merci de ne pas repondre à ce mail";
+
+            var SmtpClient = new SmtpClient
+            {
+                Host = "smtp.gmail.com",
+                Port = 587,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = true,
+                Credentials = new NetworkCredential(fromAdress.Address, fromPassword)
+            };
+
+            object sess = Session["p_Patient"];
+            if (Request.HttpMethod == "POST")
+            {
+                if (Request.Form["sendMailConf"] != null)
+                {
+                    using (var message = new MailMessage { Subject = subject, Body = bodyRefus })
+                    {
+                        SmtpClient.Send(message);
+                    }
+                }
+
+            }
+
+            return View();
+        }
+
     }
 
-    
+   
 
 }
+

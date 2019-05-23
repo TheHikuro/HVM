@@ -22,8 +22,8 @@ namespace HVM_2._0
 
             routes.MapRoute(
                 name: "Patient",
-                url: "{controller}/{action}/{confirmCreneaux}",
-                defaults: new { controller = "Patients", action = "Index"}
+                url: "{controller}/{action}/{crnPris}",
+                defaults: new { controller = "Patients", action = "Index", crnPris = UrlParameter.Optional }
             );
 
            routes.MapRoute(
@@ -31,12 +31,13 @@ namespace HVM_2._0
                url: "{controller}/{action}/{tempCreneau}",
                defaults: new { controller = "Visiteurs", action = "Index", tempCreneau = UrlParameter.Optional }
            );
+
             /*
             routes.MapRoute(
-                name: "Inscription",
-                url: "{controller}/{action}/{id}",
-                defaults: new { controller = "Visiteurs", action = "Inscription"}
-            );*/
+                name: "Patient2",
+                url: "{controller}/{action}/{crnPris}",
+                defaults: new { controller = "Patients", action = "Index", crnPris = UrlParameter.Optional }
+            ); */
         }
     }
 }

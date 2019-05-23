@@ -322,6 +322,7 @@
     <Content Include="Views\Visiteurs\Index.cshtml" />
     <Content Include="Views\Visiteurs\Inscription.cshtml" />
     <Content Include="Views\Patients\Mail.cshtml" />
+    <Content Include="Views\Patients\mailRefus.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
