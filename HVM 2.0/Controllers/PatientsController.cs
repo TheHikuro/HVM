@@ -22,7 +22,7 @@ namespace HVM_2._0.Controllers
             int idPatient = 0;
             String crnPris = Request.Form["CreneauxPris"];
 
-            foreach (var usr in db.Patient)
+            foreach (var usr in db.Utilisateur)
             {
                 if (Session["p_Patient"].ToString() == usr.login.Trim())
                     idPatient = usr.id_patient;
@@ -60,7 +60,7 @@ namespace HVM_2._0.Controllers
                 }
             }
 
-            all All = new all(); All.crenaux = db.Creneau.ToList(); All.patients = db.Patient.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
+            all All = new all(); All.crenaux = db.Creneau.ToList(); All.patients = db.Utilisateur.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
             db.SaveChanges();
 
             return View(All);
@@ -73,7 +73,7 @@ namespace HVM_2._0.Controllers
         
             foreach (var item in db.Creneau)
             {
-                foreach (var usr in db.Patient)
+                foreach (var usr in db.Utilisateur)
                 {
                     if (Session["p_Patient"].ToString() == usr.login.Trim())
                     {
@@ -138,7 +138,7 @@ namespace HVM_2._0.Controllers
            
             foreach (var item in db.Creneau)
             {
-                foreach (var usr in db.Patient)
+                foreach (var usr in db.Utilisateur)
                 {
                     if (Session["p_Patient"].ToString() == usr.login.Trim())
                     {

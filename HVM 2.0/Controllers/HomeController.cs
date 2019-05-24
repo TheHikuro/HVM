@@ -25,7 +25,7 @@ namespace HVM_2._0.Controllers
                     r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
                     if (r_codeVisit.ToString() != null && r_codeVisit != -1)
                     {
-                        foreach (var item in db.Patient.ToList())
+                        foreach (var item in db.Utilisateur.ToList())
                         {
                             if (r_codeVisit == item.code_visiteur)
                             {
@@ -44,12 +44,16 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["p_Patient"] != null)             
                 {
-                    foreach (var item in db.Patient.ToList())
+                    foreach (var item in db.Utilisateur.ToList())
                     {
                         if (Request.Form["p_Patient"].ToString() == item.login.Trim() && Request.Form["pass"].ToString() == item.password.Trim())
                         {
                             Session["p_Patient"] = Request.Form["p_Patient"];
-                            return RedirectToAction("Index", "Patients");
+
+                            if (item.administrateur == false)
+                                return RedirectToAction("Index", "Patients");
+                            else
+                                return RedirectToAction("Index", "Administrateurs");
                         }
                     }
                 }

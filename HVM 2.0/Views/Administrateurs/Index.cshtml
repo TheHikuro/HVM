@@ -1,0 +1,79 @@
+﻿@model HVM_2._0.Models.all
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<script type="text/javascript">
+
+    function verifNumber(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = '0123456789';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function verifLetter(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ./*-+';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+</script>
+
+<h2 style="text-align:center">Ajout d'un patient</h2>
+
+<form method="post" action="/Administrateurs/Index">
+
+    <div class="form-group">
+        <label for="l_prenom">Prenom : </label>
+        <input type="text" id="i_prenom" name="prenom" onkeypress="return verifLetter(event)" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_nom">Nom :</label>
+        <input type="text" id="i_nom" name="nom" onkeypress="return verifLetter(event)" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_age">Age :</label>
+        <input type="text" id="i_age" name="age" onkeypress="return verifNumber(event)" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_login">Login :</label>
+        <input type="text" id="i_login" name="login" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_password">Password  :</label>
+        <input type="text" id="i_password" name="password" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_codeV">Code Visiteur :</label>
+        <input type="text" id="i_codeV" name="codeV" onkeypress="return verifNumber(event)" />
+    </div><hr />
+
+    <div class="form-group">
+        <label for="l_admin">Administrateur : </label>
+        <input type="radio" id="adminN" name="admin" checked="checked" value="No" />
+        <label for="l_adminN">Non</label>
+        <input type="radio" id="adminY" name="admin" value="Yes" />
+        <label for="l_adminY">Oui</label>
+    </div><hr />
+
+    <div style="margin-top:10px;width:auto;height:auto">
+        <input type="submit" class="btn btn-default" name="validate" value="Valider" style="background-color:palegreen" />
+    </div>
+</form>
+
+
+

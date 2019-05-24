@@ -18,6 +18,6 @@ namespace HVM_2._0.Models
         public int id_chambre { get; set; }
         public int id_possede { get; set; }
     
-        public virtual Patient Patient { get; set; }
+        public virtual Utilisateur Utilisateur { get; set; }
     }
 }

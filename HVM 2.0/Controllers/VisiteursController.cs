@@ -21,7 +21,7 @@ namespace HVM_2._0.Controllers
             List<Creneau> creneauTmpR = new List<Creneau>(), creneauToDelete = new List<Creneau>();
             int idPatient = 0;
 
-            foreach (var usr in db.Patient)
+            foreach (var usr in db.Utilisateur)
             {
                 if (Int32.Parse(Session["codeVisiteur"].ToString()) == usr.code_visiteur)
                     idPatient = usr.id_patient;
