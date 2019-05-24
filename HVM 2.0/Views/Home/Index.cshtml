@@ -20,6 +20,26 @@
 
     }
 
+    function verifNumber(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = '0123456789';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function verifLetter(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ./*-+';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
 </script>
 
 <div class="row">
@@ -31,13 +51,15 @@
             <form method="post" action="/Home/Index">
                 <section id="loginFormVisiteur" style="visibility:hidden;text-align:center" value="loginFormVisiteur">
 
-                    <h4>Utilisez le numero du dossier patient</h4>
+                    <h4>Utilisez le numéro de dossier du patient</h4>
                     <hr />
 
                     <div class="form-group">
-                        <input type="text" name="codeVisiteur" />
+                        <input type="text" name="codeVisiteur" onkeypress="return verifNumber(event)"/>
                     </div>
+
                     <hr />
+
                     <div class="form-group">
                         <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
                     </div>
@@ -56,7 +78,7 @@
                     <h4>Identifiant :</h4>
 
                     <div class="form-group">
-                        <input type="text" name="p_Patient" />
+                        <input type="text" name="p_Patient" onkeypress="return verifLetter(event)" />
                     </div>
                     <hr />
                     <h4>Mot de passe :</h4>
@@ -72,5 +94,5 @@
             </form>
         </div>
         <!-- Fin Formulaire Patient -->
-        <div />
-    </div>
+    <div />
+</div>

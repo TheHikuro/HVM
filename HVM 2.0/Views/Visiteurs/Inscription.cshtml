@@ -4,6 +4,31 @@
     ViewBag.Title = "Inscription";
 }
 
+
+<script type="text/javascript">
+    
+    function verifNumber(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = '0123456789';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    function verifLetter(evt) {
+        var keyCode = evt.which ? evt.which : evt.keyCode;
+        var accept = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJLMNOPQRSTUVWXYZ./*-+';
+        if (accept.indexOf(String.fromCharCode(keyCode)) >= 0) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+</script>
+
 <h2>Inscription</h2>
 
 
@@ -12,36 +37,36 @@
     @Html.AntiForgeryToken()
 
 
-<form method="post" action="/Visiteurs/Inscription/">
-    <div>
-        <div class="form-horizontal" name="creneauxOccup">
-            <h4>Visiteur</h4>
-            <hr />
-            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    <form method="post" action="/Visiteurs/Inscription/">
+        <div>
+            <div class="form-horizontal" name="creneauxOccup">
+                <h4>Visiteur</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                <div class="form-group">
+                    <label for="l_prenom">Prenom : </label>
+                    <input type="text" id="i_prenom" name="prenom" onkeypress="return verifLetter(event)" />
+                </div>
+            </div>
 
             <div class="form-group">
-                <label for="l_prenom">Prenom : </label>
-                <input type="text" id="i_prenom" name="prenom" />
+                <label for="l_nom">Nom :</label>
+                <input type="text" id="i_nom" name="nom" onkeypress="return verifLetter(event)"/>
+            </div>
+
+            <div class="form-group">
+                <label for="l_mail">Mail : </label>
+                <input type="email" id="i_mail" name="mail" />
+            </div>
+
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-10">
+                    <input type="submit" value="Create" class="btn btn-default" style="background-color:palegreen" />
+                </div>
             </div>
         </div>
-
-        <div class="form-group">
-            <label for="l_nom">Nom :</label>
-            <input type="text" id="i_nom" name="nom" />
-        </div>
-
-        <div class="form-group">
-            <label for="l_mail">Mail : </label>
-            <input type="text" id="i_mail" name="mail" />
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default"/>
-            </div>
-        </div>
-    </div>
-</form>
+    </form>
 
 }
 
