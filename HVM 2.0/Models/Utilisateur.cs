@@ -32,6 +32,7 @@ namespace HVM_2._0.Models
             code_visiteur = p_code_visiteur;
             administrateur = p_administrateur;
         }
+    
         public int id_patient { get; set; }
         public string prenom { get; set; }
         public string nom { get; set; }
@@ -39,7 +40,7 @@ namespace HVM_2._0.Models
         public string login { get; set; }
         public string password { get; set; }
         public Nullable<int> code_visiteur { get; set; }
-        public bool administrateur { get; set; }
+        public Nullable<bool> administrateur { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Creneau> Creneau { get; set; }

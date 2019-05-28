@@ -20,19 +20,19 @@ namespace HVM_2._0.Models
             this.Reserve = new HashSet<Reserve>();
         }
 
-        public Visiteur(int p_id, string p_prenom, string p_nom, string p_mail)
+        public Visiteur(int p_id_visiteur, string p_prenom, string p_nom, string p_mail)
         {
-            id_Visiteur = p_id;
+            id_Visiteur = p_id_visiteur;
             prenom = p_prenom;
             nom = p_nom;
             mail = p_mail;
         }
-
+    
         public int id_Visiteur { get; set; }
         public string prenom { get; set; }
         public string nom { get; set; }
         public string mail { get; set; }
-        public int codeVisit;
+    
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Reserve> Reserve { get; set; }
     }

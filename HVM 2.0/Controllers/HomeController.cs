@@ -12,7 +12,7 @@ namespace HVM_2._0.Controllers
 {
     public class HomeController : Controller
     {
-        private Database1Entities1 db = new Database1Entities1();
+        private Entities db = new Entities();
 
         int r_codeVisit = -1;
         public ActionResult Index()
