@@ -17,10 +17,10 @@ namespace HVM_2._0.Controllers
         
         public ActionResult Index()
         {
-            int idCreneau;
             object sess = Session["p_Patient"];
             int idPatient = 0;
-            String crnPris = Request.Form["CreneauxPris"];
+            int crnPris = 0 ;
+            ;
 
             foreach (var usr in db.Utilisateur)
             {
@@ -30,16 +30,14 @@ namespace HVM_2._0.Controllers
 
             if (Request.HttpMethod == "POST")
             {
-                if (Request.Form["CreneauxPris"] != null)
-                {
                    if(Request.Form["accept"] != null)
                    {
                         foreach (var item in db.Creneau)
                         {
-                            if (item.date.ToString().Trim() == crnPris.Split('|')[0].Trim() && item.id_patient == idPatient)
+                            if (item.id_creneau == Int32.Parse(Request.Form["idCreneau"]))
                             {
                                 item.disponibilite = false; item.reserve = false;
-                                idCreneau = item.id_creneau;
+                                crnPris = item.id_creneau;
                             }
                         }
                         db.SaveChanges();
@@ -50,14 +48,14 @@ namespace HVM_2._0.Controllers
                    {
                         foreach (var item in db.Creneau)
                         {
-                            if (Request.Form["CreneauxPris"].Split('|')[0].Trim() == item.date.ToString().Trim() && idPatient == item.id_patient)
+                            if (item.id_creneau == Int32.Parse(Request.Form["idCreneau"]))
                             {
                                 item.reserve = false;
+                                crnPris = item.id_creneau;
                                 return RedirectToAction("mailRefus", "Patients", new { crnPris });
                             }
                         }
                    }
-                }
             }
 
             all All = new all(); All.crenaux = db.Creneau.ToList(); All.patients = db.Utilisateur.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
@@ -66,11 +64,11 @@ namespace HVM_2._0.Controllers
             return View(All);
         }
         
-        public ActionResult Mail(String crnPris)
+        public ActionResult Mail(int crnPris)
         {
             int idPatient = 0;
             String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
-        
+            Creneau crn = db.Creneau.Find(crnPris);
             foreach (var item in db.Creneau)
             {
                 foreach (var usr in db.Utilisateur)
@@ -104,7 +102,7 @@ namespace HVM_2._0.Controllers
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
                     "Bonjour Mr/Mme" + nomVisiteur + "/n" +
-            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crnPris + "/n" +
+            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crn.date + "/n" +
             "Merci de ne pas repondre à ce mail";
 
             var SmtpClient = new SmtpClient
@@ -131,11 +129,11 @@ namespace HVM_2._0.Controllers
             return View();
         }
 
-        public ActionResult mailRefus(String crnPris)
+        public ActionResult mailRefus(int crnPris)
         {
             int idPatient = 0;
             String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
-           
+            Creneau crn = db.Creneau.Find(crnPris);
             foreach (var item in db.Creneau)
             {
                 foreach (var usr in db.Utilisateur)
@@ -169,7 +167,7 @@ namespace HVM_2._0.Controllers
             string subject = "Reponse à votre demande de visite";
             string bodyRefus = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
                     "Bonjour Mr/Mme" + nomVisiteur + "/n" +
-            "Nous vous informons que" + nomPatient + "à refusé la demande de visite le " + crnPris + 
+            "Nous vous informons que" + nomPatient + "à refusé la demande de visite le " + crn.date + 
             "Merci de ne pas repondre à ce mail";
 
             var SmtpClient = new SmtpClient

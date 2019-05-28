@@ -82,8 +82,7 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["prenom"] != null && Request.Form["nom"] != null && Request.Form["mail"] != null)
                 {
-                    foreach(var item in db.Visiteur.ToList())
-                    { idVisiteur++; }
+                    foreach(var item in db.Visiteur.ToList()) { idVisiteur++; }
                     db.Visiteur.Add(new Visiteur(idVisiteur, Request.Form["prenom"], Request.Form["nom"], Request.Form["mail"]));
                     db.SaveChanges();
 
