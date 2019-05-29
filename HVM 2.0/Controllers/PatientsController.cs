@@ -52,13 +52,17 @@ namespace HVM_2._0.Controllers
                             {
                                 item.reserve = false;
                                 crnPris = item.id_creneau;
-                                return RedirectToAction("mailRefus", "Patients", new { crnPris });
                             }
                         }
+                        db.SaveChanges();
+                        return RedirectToAction("mailRefus", "Patients", new { crnPris });
                    }
             }
 
-            all All = new all(); All.crenaux = db.Creneau.ToList(); All.patients = db.Utilisateur.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
+            List<Creneau> crnList = new List<Creneau>();
+            crnList = db.Creneau.ToList();
+            crnList.Reverse();
+            all All = new all(); All.crenaux = crnList;  db.Creneau.ToList().Reverse(); All.patients = db.Utilisateur.ToList(); All.reserves = db.Reserve.ToList(); All.visiteurs = db.Visiteur.ToList();
             db.SaveChanges();
 
             return View(All);

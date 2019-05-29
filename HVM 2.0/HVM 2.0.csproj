@@ -254,8 +254,10 @@
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="fonts\LogoHVM.png" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
+    <Content Include="Grant.sql" />
     <Content Include="Models\hvmEF.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>hvmEF.edmx</DependentUpon>

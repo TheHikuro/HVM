@@ -1,7 +1,8 @@
 ﻿<!-- HOME/INDEX-->
 
+    <link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon" />
 @{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Hopital Visit Manager";
 }
 
 <script type="text/javascript">
@@ -46,19 +47,19 @@
     <div class="" id="wrapper">
         <!-- Formulaire Visiteur -->
         <div class="leftForm">
-
+            <p>  </p>
             <p style="text-align:center;margin-top:10px"><input type="button" id="contactchoice1" name="contactVisiteur" value="Visiteur" onclick="handleClick(this)" style="width:250px;height:auto;font-size:25px" /></p>
             <form method="post" action="/Home/Index">
                 <section id="loginFormVisiteur" style="visibility:hidden;text-align:center" value="loginFormVisiteur">
 
                     <h4>Utilisez le numéro de dossier du patient</h4>
-                    <hr style="border-top: 1px solid"/>
-
+                    <hr style="border-top: 1px solid" />
+                    
                     <div class="form-group">
-                        <input type="text" name="codeVisiteur" onkeypress="return verifNumber(event)"/>
+                        <input type="text" name="codeVisiteur" onkeypress="return verifNumber(event)" />
                     </div>
 
-                    <hr style="border-top: 1px solid"/>
+                    <hr style="border-top: 1px solid" />
 
                     <div class="form-group">
                         <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
