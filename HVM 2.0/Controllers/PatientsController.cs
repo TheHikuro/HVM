@@ -68,7 +68,7 @@ namespace HVM_2._0.Controllers
             return View(All);
         }
         
-        public ActionResult Mail(int crnPris)
+        public ActionResult Mail(int? crnPris)
         {
             int idPatient = 0;
             String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
@@ -92,16 +92,16 @@ namespace HVM_2._0.Controllers
                         {
                             if (res.id_Visiteur == vis.id_Visiteur)
                             {
-                                prenomVisiteur = vis.prenom;
-                                nomVisiteur = vis.nom;
-                                mailVisiteur = vis.mail;
+                                prenomVisiteur = vis.prenom.Trim();
+                                nomVisiteur = vis.nom.Trim();
+                                mailVisiteur = vis.mail.Trim();
                             }
                         }
                     }
                 }
             }
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
-            var toAddress = new MailAddress(mailVisiteur);
+            var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
             const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
@@ -124,9 +124,9 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["sendMailConf"] != null)
                 {
-                    using (var message = new MailMessage { Subject = subject, Body = bodyAccept })
+                    using (var message_a = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyAccept })
                     {
-                        SmtpClient.Send(message);
+                        SmtpClient.Send(message_a);
                     }
                 }
             }
@@ -166,7 +166,7 @@ namespace HVM_2._0.Controllers
                 }
             }
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
-            var toAddress = new MailAddress(mailVisiteur);
+            var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
             const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
             string bodyRefus = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
@@ -189,7 +189,7 @@ namespace HVM_2._0.Controllers
             {
                 if (Request.Form["sendMailConf"] != null)
                 {
-                    using (var message = new MailMessage { Subject = subject, Body = bodyRefus })
+                    using (var message = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyRefus })
                     {
                         SmtpClient.Send(message);
                     }
