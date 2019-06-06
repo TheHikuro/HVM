@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using HVM_2._0.Models;
 using System.Net.Mail;
+using System.Diagnostics;
+using System.Net.Security;
 
 namespace HVM_2._0.Controllers
 {
@@ -19,7 +21,7 @@ namespace HVM_2._0.Controllers
         {
             object sess = Session["p_Patient"];
             int idPatient = 0;
-            Creneau crnPris = new Creneau();
+            int crnPris = 0 ;
             ;
 
             foreach (var usr in db.Utilisateur)
@@ -37,24 +39,25 @@ namespace HVM_2._0.Controllers
                             if (item.id_creneau == Int32.Parse(Request.Form["idCreneau"]))
                             {
                                 item.disponibilite = false; item.reserve = false;
-                                crnPris = item;
+                                crnPris = item.id_creneau;
                             }
                         }
                         db.SaveChanges();
-                        Mail(crnPris);
+                        return RedirectToAction("Mail", "Patients", new { crnPris });
                    }
-                   else if (Request.Form["refus"] != null)
+
+                   if(Request.Form["refus"] != null)
                    {
                         foreach (var item in db.Creneau)
                         {
                             if (item.id_creneau == Int32.Parse(Request.Form["idCreneau"]))
                             {
                                 item.reserve = false;
-                                crnPris = item;
+                                crnPris = item.id_creneau;
                             }
                         }
                         db.SaveChanges();
-                        mailRefus(crnPris);
+                        return RedirectToAction("mailRefus", "Patients", new { crnPris });
                    }
             }
 
@@ -67,55 +70,48 @@ namespace HVM_2._0.Controllers
             return View(All);
         }
         
-        public void Mail(Creneau crnPris)
+        public ActionResult Mail(int? crnPris)
         {
             int idPatient = 0;
-            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null, prenomPatient = null;
-            DateTime? dateCrn = crnPris.date;
-            Chambre chambrePatient = new Chambre();
-            
-            foreach (var usr in db.Utilisateur)
+            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
+            Creneau crn = db.Creneau.Find(crnPris);
+            foreach (var item in db.Creneau)
             {
-                if (Session["p_Patient"].ToString() == usr.login.Trim())
+                foreach (var usr in db.Utilisateur)
                 {
-                    idPatient = usr.id_patient;
-                    nomPatient = usr.nom;
-                    prenomPatient = usr.prenom;
-                }
-            }
-
-            foreach (var res in db.Reserve)
-            {
-                if (res.id_Creneau == crnPris.id_creneau)
-                {
-                    foreach (var vis in db.Visiteur)
+                    if (Session["p_Patient"].ToString() == usr.login.Trim())
                     {
-                        if (res.id_Visiteur == vis.id_Visiteur)
+                        idPatient = usr.id_patient;
+                        nomPatient = usr.nom;
+                    }
+                }
+
+                foreach (var res in db.Reserve)
+                {
+                    if (res.id_Creneau == item.id_creneau)
+                    {
+                        foreach (var vis in db.Visiteur)
                         {
-                            prenomVisiteur = vis.prenom.Trim();
-                            nomVisiteur = vis.nom.Trim();
-                            mailVisiteur = vis.mail.Trim();
+                            if (res.id_Visiteur == vis.id_Visiteur)
+                            {
+                                prenomVisiteur = vis.prenom.Trim();
+                                nomVisiteur = vis.nom.Trim();
+                                mailVisiteur = vis.mail.Trim();
+                            }
                         }
                     }
                 }
             }
-            foreach(var poss in db.Possede)
-            {
-                if (poss.id_Patient == idPatient)
-                {
-                    chambrePatient = db.Chambre.Find(poss.id_chambre);
-                }
-            }
-            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "Hopital Innovation Aforp");
-            var toAddress = new MailAddress("t.martin92500@hotmail.fr");
+            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
+            var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
             const string fromPassword = "HVM2019Z";
             string subject = "Reponse à votre demande de visite";
-            string bodyAccept = "Bonjour Mr/Mme " + nomVisiteur + "\n \n" +
-            "Nous vous confirmons votre RDV avec " + prenomPatient+ " " + nomPatient + " du " + dateCrn.ToString() + "\n" +
-            "Veuillez vous rendre au batiment " + chambrePatient.batiment + ", la chambre porte le numéro " + chambrePatient.numero + " située à l'étage " + chambrePatient.etage + "\n\n" +
-            "Ceci est un message automatique envoyé par l'application HVM, merci de ne pas y répondre";
+            string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
+                    "Bonjour Mr/Mme" + nomVisiteur + "/n" +
+            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crnPris + "/n" +
+            "Merci de ne pas repondre à ce mail";
 
-            var Smtp = new SmtpClient
+            /*var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
@@ -123,59 +119,76 @@ namespace HVM_2._0.Controllers
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = true,
                 Credentials = new NetworkCredential(fromAdress.Address, fromPassword)
-            };
-            using (var message_a = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyAccept })
+            }; */
+            SmtpClient clientSmtp = new SmtpClient("smtp.gmail.com", 587);
+            clientSmtp.EnableSsl = true;
+            clientSmtp.UseDefaultCredentials = false;
+            clientSmtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            clientSmtp.Credentials = new System.Net.NetworkCredential(fromAdress.Address, fromPassword);
+
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("Hopital.manager@gmail.com");
+            mail.To.Add(mailVisiteur);
+            mail.CC.Add("loan.cleris@gmail.com");//if required
+            mail.Subject = "Subject of the Mail";
+            mail.Body = "Body Content of the Mail";
+            mail.IsBodyHtml = true;
+
+            clientSmtp.Send(mail);
+            /*object sess = Session["p_Patient"];
+            if (Request.HttpMethod == "POST")
             {
-                Smtp.Send(message_a);
-            }
+                if (Request.Form["sendMailConf"] != null)
+                {
+                    using (var message_a = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyAccept })
+                    {
+                        clientSmtp.Send(message_a);
+                    }
+                }
+            }*/
+            return View();
         }
 
-        public void mailRefus(Creneau crnPris)
+        public ActionResult mailRefus(int crnPris)
         {
             int idPatient = 0;
-            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null, prenomPatient = null;
-            DateTime? dateCrn = crnPris.date;
-            Chambre chambrePatient = new Chambre();
-
-            foreach (var usr in db.Utilisateur)
+            String nomVisiteur = null, prenomVisiteur = null, mailVisiteur = null, nomPatient = null;
+            Creneau crn = db.Creneau.Find(crnPris);
+            foreach (var item in db.Creneau)
             {
-                if (Session["p_Patient"].ToString() == usr.login.Trim())
+                foreach (var usr in db.Utilisateur)
                 {
-                    idPatient = usr.id_patient;
-                    nomPatient = usr.nom;
-                    prenomPatient = usr.prenom;
-                }
-            }
-            foreach (var res in db.Reserve)
-            {
-                if (res.id_Creneau == crnPris.id_creneau)
-                {
-                    foreach (var vis in db.Visiteur)
+                    if (Session["p_Patient"].ToString() == usr.login.Trim())
                     {
-                        if (res.id_Visiteur == vis.id_Visiteur)
+                        idPatient = usr.id_patient;
+                        nomPatient = usr.nom.Trim();
+                    }
+                }
+
+                foreach (var res in db.Reserve)
+                {
+                    if (res.id_Creneau == item.id_creneau)
+                    {
+                        foreach (var vis in db.Visiteur)
                         {
-                            prenomVisiteur = vis.prenom.Trim();
-                            nomVisiteur = vis.nom.Trim();
-                            mailVisiteur = vis.mail.Trim();
+                            if (res.id_Visiteur == vis.id_Visiteur)
+                            {
+                                prenomVisiteur = vis.prenom.Trim();
+                                nomVisiteur = vis.nom.Trim();
+                                mailVisiteur = vis.mail.Trim();
+                            }
                         }
                     }
                 }
             }
-            foreach (var poss in db.Possede)
-            {
-                if (poss.id_Patient == idPatient)
-                {
-                    chambrePatient = db.Chambre.Find(poss.id_chambre);
-                }
-            }
-
-            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "Hopital Innovation Aforp");
-            var toAddress = new MailAddress("t.martin92500@hotmail.fr");
-            const string fromPassword = "HVM2019Z";
+            var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
+            var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
+            const string fromPassword = "HVM2019'";
             string subject = "Reponse à votre demande de visite";
-            string bodyRefus = "Bonjour Mr/Mme " + nomVisiteur + "\n \n" +
-         "Votre RDV avec " + prenomPatient + " " + nomPatient + " du " + dateCrn.ToString() + " à été refusé.\n" +
-         "Ceci est un message automatique envoyé par l'application HVM, merci de ne pas y répondre";
+            string bodyRefus = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
+                    "Bonjour Mr/Mme" + nomVisiteur + "/n" +
+            "Nous vous informons que" + nomPatient + "à refusé la demande de visite le " + crn.date + 
+            "Merci de ne pas repondre à ce mail";
 
             var SmtpClient = new SmtpClient
             {
@@ -186,12 +199,25 @@ namespace HVM_2._0.Controllers
                 UseDefaultCredentials = true,
                 Credentials = new NetworkCredential(fromAdress.Address, fromPassword)
             };
-            using (var message = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyRefus })
-            {
-                SmtpClient.Send(message);
-            }
-        }
-    }
-}
 
+            object sess = Session["p_Patient"];
+            if (Request.HttpMethod == "POST")
+            {
+                if (Request.Form["sendMailConf"] != null)
+                {
+                    using (var message = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyRefus })
+                    {
+                        SmtpClient.Send(message);
+                    }
+                }
+
+            }
+            return View();
+        }
+
+    }
+
+   
+
+}
 
