@@ -8,6 +8,8 @@ using System.Web;
 using System.Web.Mvc;
 using HVM_2._0.Models;
 using System.Net.Mail;
+using System.Diagnostics;
+using System.Net.Security;
 
 namespace HVM_2._0.Controllers
 {
@@ -102,14 +104,14 @@ namespace HVM_2._0.Controllers
             }
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "HVM");
             var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
-            const string fromPassword = "HVM2019'";
+            const string fromPassword = "HVM2019Z";
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Ceci est un message automatique envoyé par l'application HVM /n /n" +
                     "Bonjour Mr/Mme" + nomVisiteur + "/n" +
-            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crn.date + "/n" +
+            "Nous vous confirmons votre RDV avec" + nomPatient + "le" + crnPris + "/n" +
             "Merci de ne pas repondre à ce mail";
 
-            var SmtpClient = new SmtpClient
+            /*var smtp = new SmtpClient
             {
                 Host = "smtp.gmail.com",
                 Port = 587,
@@ -117,19 +119,33 @@ namespace HVM_2._0.Controllers
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = true,
                 Credentials = new NetworkCredential(fromAdress.Address, fromPassword)
-            };
+            }; */
+            SmtpClient clientSmtp = new SmtpClient("smtp.gmail.com", 587);
+            clientSmtp.EnableSsl = true;
+            clientSmtp.UseDefaultCredentials = false;
+            clientSmtp.DeliveryMethod = SmtpDeliveryMethod.Network;
+            clientSmtp.Credentials = new System.Net.NetworkCredential(fromAdress.Address, fromPassword);
 
-            object sess = Session["p_Patient"];
+            MailMessage mail = new MailMessage();
+            mail.From = new MailAddress("Hopital.manager@gmail.com");
+            mail.To.Add(mailVisiteur);
+            mail.CC.Add("loan.cleris@gmail.com");//if required
+            mail.Subject = "Subject of the Mail";
+            mail.Body = "Body Content of the Mail";
+            mail.IsBodyHtml = true;
+
+            clientSmtp.Send(mail);
+            /*object sess = Session["p_Patient"];
             if (Request.HttpMethod == "POST")
             {
                 if (Request.Form["sendMailConf"] != null)
                 {
                     using (var message_a = new MailMessage(fromAdress, toAddress) { Subject = subject, Body = bodyAccept })
                     {
-                        SmtpClient.Send(message_a);
+                        clientSmtp.Send(message_a);
                     }
                 }
-            }
+            }*/
             return View();
         }
 
