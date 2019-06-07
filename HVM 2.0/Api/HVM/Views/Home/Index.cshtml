@@ -1,0 +1,164 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<!-- JS -->
+<script type="text/javascript">
+
+    function handleClick(myRadio) {
+
+        if (myRadio.value == "Visiteur") {
+            // visible tamer div
+            document.getElementById("visiteurForm").style.visibility = "visible";
+            document.getElementById("patientForm").style.visibility = "hidden";
+
+
+        }
+
+        else {
+            // hide tamer div
+            document.getElementById("visiteurForm").style.visibility = "hidden";
+            document.getElementById("patientForm").style.visibility = "visible";
+
+        }
+
+    }
+
+    //function Validation() {
+
+         $.ajax({
+           url: 'Url.Action("AddToCart", "HomeController")',
+           type: 'GET',
+           dataType: 'json',
+           cache: false,
+           data: { 'id': id },
+           success: function (results) {
+                alert(results)
+           },
+           error: function () {
+                alert('Error occured');
+           }
+        });
+        
+    }
+
+    function clic(element) {
+        var val = document.getElementById("nPatient");
+        alert("Connecter en tant que " + element.val);
+    }
+
+
+</script>
+<!--FIN JS-->
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <!--CSS-->
+    <style type="text/css">
+
+        div#wrapper {
+            padding: 5px;
+        }
+
+            div#wrapper div {
+                display: inline-block;
+            }
+
+                div#wrapper div.leftForm {
+                    width: 48%;
+                }
+
+                div#wrapper div.rightForm {
+                    width: 48%;
+                }
+    </style>
+    <!--FIN CSS-->
+</head>
+<body>
+
+    <div id="wrapper">
+
+        <div class="leftForm">
+
+            <input type="radio" id="contactchoice1"
+                   name="contact" value="Visiteur" onclick="handleClick(this)">
+            <label for="contactchoice1">Visiteur</label>
+
+            <!--Formulaire Visiteurs-->
+            <form id="visiteurForm" style="visibility:hidden" class="form-horizontal" method="GET" action="">
+
+                <h1>Formulaire Visiteur</h1>
+
+                <div>
+                    <label for="code" id="nPatient">Numéro patients:</label>
+                    <input type="text" id="login" name="login">
+                </div>
+                <div style=" visibility:hidden">
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <br />
+                <input type="submit" onclick="clic(this)" value="Connexion"> 
+            </form>
+        </div>
+        <!--FIN Formulaire visiteurs-->
+        <div class="rightForm">
+
+            <input type="radio" id="contactchoice2"
+                   name="contact" value="Patient" onclick="handleClick(this)">
+            <label for="contactchoice2">Patient</label>
+
+            <!--Formulaire Patients-->
+            <form id="patientForm" style="visibility:hidden">
+
+                <h1>Formulaire Patient</h1>
+
+                <div>
+                    <label for="login">Nom d'utilisateur :</label>
+                    <input type="text" id="login" name="login">
+                    <span class="e-float-line"></span>
+                </div>
+                <div id="requireError"></div>
+                <div>
+                    <label for="password">Mot de passe :</label>
+                    <input type="password" id="password" name="password">
+                </div>
+                <br />
+                <button type="submit">Se connecter</button>
+            </form>
+            <!--Fin Formulaire Patients-->
+        </div>
+
+        <!--
+           using (Html.BeginForm())
+    {
+        <fieldset>
+            <legend>Modifier un restaurant</legend>
+
+            <div>
+                Html.LabelFor(m => model.code_visiteur)
+                Html.TextBoxFor(model => model.Nom)
+                Html.ValidationMessageFor(model => model.Nom)
+            </div>
+            <div>
+                Html.LabelFor(model => model.Telephone)
+                Html.TextBoxFor(model => model.Telephone)
+            </div>
+            <br />
+            <input type="submit" value="Modifier" />
+        </fieldset>
+    }
+           -->
+        
+
+    
+    </div>
+
+</body>
+</html>
+
