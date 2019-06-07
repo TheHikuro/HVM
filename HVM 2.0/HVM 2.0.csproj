@@ -307,8 +307,6 @@
     <Content Include="Views\Patients\Index.cshtml" />
     <Content Include="Views\Visiteurs\Index.cshtml" />
     <Content Include="Views\Visiteurs\Inscription.cshtml" />
-    <Content Include="Views\Patients\Mail.cshtml" />
-    <Content Include="Views\Patients\mailRefus.cshtml" />
     <Content Include="Views\Administrateurs\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
