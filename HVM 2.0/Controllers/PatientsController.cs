@@ -107,7 +107,7 @@ namespace HVM_2._0.Controllers
                 }
             }
             var fromAdress = new MailAddress("Hopital.Manager@gmail.com", "Hopital Innovation Aforp");
-            var toAddress = new MailAddress("t.martin92500@hotmail.fr");
+            var toAddress = new MailAddress(mailVisiteur, "loan.cleris@gmail.com");
             const string fromPassword = "HVM2019Z";
             string subject = "Reponse à votre demande de visite";
             string bodyAccept = "Bonjour Mr/Mme " + nomVisiteur + "\n \n" +

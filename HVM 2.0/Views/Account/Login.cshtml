@@ -1,0 +1,132 @@
+﻿@using HVM_2._0.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Connexion";
+}
+
+<!-- JS -->
+<script type="text/javascript">
+
+    function handleClick(myRadio) {
+
+        if (myRadio.value == "Visiteur") {
+            // visible tamer div
+            document.getElementById("loginFormVisiteur").style.visibility = "visible";
+            document.getElementById("loginFormPatient").style.visibility = "hidden";
+        }
+
+        else {
+            // hide tamer div
+            document.getElementById("loginFormVisiteur").style.visibility = "hidden";
+            document.getElementById("loginFormPatient").style.visibility = "visible";
+        }
+
+    }
+
+</script>
+<!-- Fin JS -->
+
+
+<h2>@ViewBag.Title.</h2>
+<div class="row" >
+    <div class="col-md-8" id="wrapper">
+        <!-- Formulaire Visiteur -->
+        <div class="leftForm">
+
+            <input type="button" id="contactchoice1" name="contact" value="Visiteur" onclick="handleClick(this)" />
+
+            <section id="loginFormVisiteur" style="visibility:hidden" value="loginFormVisiteur">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>Utilisez le numero du dossier patient</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group" style="visibility:hidden">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Connexion" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                    @* Activer ceci une fois que la confirmation de votre compte est activée pour la fonctionnalité de réinitialisation du mot de passe
+                        <p>
+                            @Html.ActionLink("Vous avez oublié votre mot de passe ?", "ForgotPassword")
+                        </p>*@
+                }
+            </section>
+        </div>
+        <!-- Fin Formulaire Visiteurs-->
+        <!-- Formulaire Patient -->
+        <div class="rigthForm">
+
+            <input type="button" id="contactchoice2" name="contact" value="Patient" onclick="handleClick(this)" />
+
+            <section id="loginFormPatient" style="visibility:hidden" value="loginFormPatient">
+                @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                {
+                    @Html.AntiForgeryToken()
+                    <h4>Utilisez un compte local pour vous connecter.</h4>
+                    <hr />
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                        <div class="col-md-10">
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <div class="checkbox">
+                                @Html.CheckBoxFor(m => m.RememberMe)
+                                @Html.LabelFor(m => m.RememberMe)
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-md-offset-2 col-md-10">
+                            <input type="submit" value="Connexion" class="btn btn-default" />
+                        </div>
+                    </div>
+
+                    @* Activer ceci une fois que la confirmation de votre compte est activée pour la fonctionnalité de réinitialisation du mot de passe
+                        <p>
+                            @Html.ActionLink("Vous avez oublié votre mot de passe ?", "ForgotPassword")
+                        </p>*@
+                }
+            </section>
+        </div>
+        <!-- fin formulaire Patient -->
+
+    </div>
+
+    @section Scripts {
+        @Scripts.Render("~/bundles/jqueryval")
+    }
+
+</div>
+    
+
+
