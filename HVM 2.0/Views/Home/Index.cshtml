@@ -2,7 +2,7 @@
 
     <link rel="Shortcut Icon" href="favicon.ico" type="image/x-icon" />
 @{
-    ViewBag.Title = "Hopital Visit Manager";
+    ViewBag.Title =   "Hopital Visit Manager";
 }
 
 <script type="text/javascript">
@@ -43,7 +43,18 @@
 
 </script>
 
-<div class="row">
+<div class="row" style="text-align:center;margin-top:10px">
+
+    @if (ViewBag.HideErrPat == false)
+    {
+        @Html.Label("Identifiant ou Mot de passe incorrect", new { style = "color:#FF0000" })
+    }
+
+    @if (ViewBag.HideErrVisit == false)
+    {
+        @Html.Label("Code Visiteur Incorrect", new { style = "color:#FF0000" })
+    }
+
     <div class="" id="wrapper">
         <!-- Formulaire Visiteur -->
         <div class="leftForm">
@@ -54,12 +65,12 @@
 
                     <h4>Utilisez le numéro de dossier du patient</h4>
                     <hr style="border-top: 1px solid" />
-                    
+
                     <div class="form-group">
                         <input type="text" name="codeVisiteur" onkeypress="return verifNumber(event)" />
                     </div>
 
-                    <hr style="border-top: 1px solid" />
+                    <hr style="border-top: 1px solid;margin-top:5px" />
 
                     <div class="form-group">
                         <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
@@ -81,13 +92,14 @@
                     <div class="form-group">
                         <input type="text" name="p_Patient" onkeypress="return verifLetter(event)" />
                     </div>
-                    <hr style="border-top: 1px solid"/>
+                    <hr style="border-top: 1px solid" />
                     <h4>Mot de passe :</h4>
 
                     <div>
                         <input type="password" name="pass" />
                     </div>
-                    <hr style="border-top: 1px solid"/>
+                    <hr style="border-top: 1px solid" />
+
                     <div class="form-group">
                         <input type="submit" value="Connexion" class="btn btn-default" style="background-color:palegreen" />
                     </div>
@@ -95,5 +107,5 @@
             </form>
         </div>
         <!-- Fin Formulaire Patient -->
-    <div />
-</div>
+        <div />
+    </div>

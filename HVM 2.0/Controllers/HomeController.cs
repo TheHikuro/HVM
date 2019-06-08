@@ -18,45 +18,42 @@ namespace HVM_2._0.Controllers
         public ActionResult Index()
         {
             //Authentification Visiteur
-            if (Request.HttpMethod == "POST")
-            {
-                if(Request.Form["codeVisiteur"] != null && Request.Form["codeVisiteur"] != "")
+            if (Request.HttpMethod == "POST" && Request.Form["codeVisiteur"] != null && Request.Form["codeVisiteur"] != "")
+        {
+                r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
+                if (r_codeVisit.ToString() != null && r_codeVisit != -1)
                 {
-                    r_codeVisit = Int32.Parse(Request.Form["codeVisiteur"]);
-                    if (r_codeVisit.ToString() != null && r_codeVisit != -1)
+                    foreach (var item in db.Utilisateur.ToList())
                     {
-                        foreach (var item in db.Utilisateur.ToList())
+                        if (r_codeVisit == item.code_visiteur)
                         {
-                            if (r_codeVisit == item.code_visiteur)
-                            {
-                                Session["codeVisiteur"] = r_codeVisit;
-                                Session["idVisiteur"] = item.id_patient;
-                                return RedirectToAction("Index", "Visiteurs");
-                            }
+                            Session["codeVisiteur"] = r_codeVisit;
+                            Session["idVisiteur"] = item.id_patient;
+                            return RedirectToAction("Index", "Visiteurs");
                         }
                     }
                 }
                 
+            ViewBag.HideErrVisit = false;
+            return View();
             } 
-
             //Authentification Patient
-            if (Request.HttpMethod == "POST")
+            else if (Request.HttpMethod == "POST" && Request.Form["p_Patient"] != null)
             {
-                if (Request.Form["p_Patient"] != null)             
+                foreach (var item in db.Utilisateur.ToList())
                 {
-                    foreach (var item in db.Utilisateur.ToList())
+                    if (Request.Form["p_Patient"].ToString() == item.login.Trim() && Request.Form["pass"].ToString() == item.password.Trim())
                     {
-                        if (Request.Form["p_Patient"].ToString() == item.login.Trim() && Request.Form["pass"].ToString() == item.password.Trim())
-                        {
-                            Session["p_Patient"] = Request.Form["p_Patient"];
+                        Session["p_Patient"] = Request.Form["p_Patient"];
 
-                            if (item.administrateur == false)
-                                return RedirectToAction("Index", "Patients");
-                            else
-                                return RedirectToAction("Index", "Administrateurs");
-                        }
+                        if (item.administrateur == false)
+                            return RedirectToAction("Index", "Patients");
+                        else
+                            return RedirectToAction("Index", "Administrateurs");
                     }
                 }
+            ViewBag.HideErrPat = false;
+            return View();
             }
             return View();
         }
